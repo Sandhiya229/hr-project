@@ -94,7 +94,8 @@ Best Regards,
 HR Department
   `;
 
-  await sendEmail({
+  // We do NOT await this, so the UI doesn't hang if Gmail is slow
+  sendEmail({
     email: email,
     subject: "Welcome to the Company - Your Login Credentials",
     message: emailMessage,
@@ -209,7 +210,8 @@ Best Regards,
 Project Management Team
       `;
 
-      await sendEmail({
+      // Do NOT await this so the UI doesn't hang
+      sendEmail({
         email: employee.email,
         subject: `New Project Assigned: ${project.projectName}`,
         message: emailMessage,

@@ -13,13 +13,16 @@ export const sendEmail = async (options) => {
       return;
     }
 
-    // 1. Create a transporter
+    // 1. Create a transporter with timeouts so it doesn't hang the API
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      connectionTimeout: 5000, // Fail after 5 seconds instead of hanging
+      greetingTimeout: 5000,
+      socketTimeout: 5000,
     });
 
     // 2. Define the email options
