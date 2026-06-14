@@ -97,9 +97,8 @@ export default function AdminProjects() {
   };
 
   const toggleEmployee = (id) => {
-    setSelectedEmployees((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    // Only allow selecting one employee at a time
+    setSelectedEmployees([id]);
   };
 
   const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -280,7 +279,8 @@ export default function AdminProjects() {
               {employees.length > 0 ? employees.map((emp) => (
                 <label key={emp._id} className={`assign-item ${selectedEmployees.includes(emp._id) ? 'selected' : ''}`}>
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="employeeSelect"
                     checked={selectedEmployees.includes(emp._id)}
                     onChange={() => toggleEmployee(emp._id)}
                   />
@@ -296,10 +296,10 @@ export default function AdminProjects() {
               <button className="btn-secondary" onClick={() => setShowAssignModal(false)}>Cancel</button>
               <button
                 className="btn-primary"
-                disabled={assignMutation.isPending}
+                disabled={assignMutation.isPending || selectedEmployees.length === 0}
                 onClick={() => assignMutation.mutate({ id: assignProjectId, employeeIds: selectedEmployees })}
               >
-                <Check size={16} /> {assignMutation.isPending ? 'Saving...' : 'Save Assignments'}
+                <Check size={16} /> {assignMutation.isPending ? 'Assigning...' : 'Assign'}
               </button>
             </div>
           </div>
