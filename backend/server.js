@@ -54,6 +54,9 @@ app.use(morgan(morganFormat, {
   }
 }));
 
+// Trust the reverse proxy (Render) so rate limiting works correctly and doesn't crash
+app.set('trust proxy', 1);
+
 // Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
