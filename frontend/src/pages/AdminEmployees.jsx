@@ -144,7 +144,7 @@ export default function AdminEmployees() {
         <table className="data-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th style={{ paddingRight: '2rem', width: '80px' }}>ID</th>
               <th>Name</th>
               <th>Date of Joining</th>
               <th>Department</th>
@@ -157,7 +157,7 @@ export default function AdminEmployees() {
           <tbody>
             {filteredEmployees.length > 0 ? filteredEmployees.map((emp) => (
               <tr key={emp._id}>
-                <td><strong>{emp.employeeId}</strong></td>
+                <td style={{ paddingRight: '2rem' }}><strong>{emp.employeeId}</strong></td>
                 <td>
                   <div>{emp.name}</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{emp.email || emp.user?.email}</div>
