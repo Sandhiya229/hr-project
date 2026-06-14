@@ -32,6 +32,14 @@ export default function AdminProjects() {
 
   const projects = projData?.data || [];
   const employees = empData?.data?.employees || [];
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Filter projects based on search query
+  const filteredProjects = projects.filter(proj => 
+    proj.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    proj.projectId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (proj.description && proj.description.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   const createMutation = useMutation({
     mutationFn: (body) => api.post('/admin/projects', body),
@@ -112,14 +120,31 @@ export default function AdminProjects() {
           <h1>Projects</h1>
           <p>Create, manage, and assign projects to your workforce efficiently.</p>
         </div>
-        <button className="btn-primary" onClick={openCreate}>
-          <FolderPlus size={18} />
-          Add New Project
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <input 
+            type="text" 
+            placeholder="Search by ID, name, or desc..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ 
+              padding: '0.6rem 1rem', 
+              borderRadius: '8px', 
+              border: '1px solid var(--border-color)', 
+              background: 'var(--surface)', 
+              color: 'var(--text-light)', 
+              width: '260px',
+              outline: 'none'
+            }}
+          />
+          <button className="btn-primary" onClick={openCreate}>
+            <FolderPlus size={18} />
+            Add New Project
+          </button>
+        </div>
       </header>
 
       <div className="projects-grid">
-        {projects.length > 0 ? projects.map((proj) => (
+        {filteredProjects.length > 0 ? filteredProjects.map((proj) => (
           <div key={proj._id} className="project-card glass-panel">
             <div className="proj-card-header">
               <div>
