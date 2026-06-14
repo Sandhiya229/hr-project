@@ -20,6 +20,7 @@ export default function AdminEmployees() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState('');
   const [createdCreds, setCreatedCreds] = useState(null); 
+  const [searchQuery, setSearchQuery] = useState(''); // Added search state
 
   const { data, isLoading } = useQuery({
     queryKey: ['adminEmployees'],
@@ -27,6 +28,14 @@ export default function AdminEmployees() {
   });
 
   const employees = data?.data?.employees || [];
+  
+  // Filter employees based on search query
+  const filteredEmployees = employees.filter(emp => 
+    emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    emp.employeeId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (emp.email && emp.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (emp.user?.email && emp.user.email.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   const createMutation = useMutation({
     mutationFn: (body) => api.post('/admin/employees', body),
@@ -95,10 +104,27 @@ export default function AdminEmployees() {
           <h1>Employees</h1>
           <p>Manage your workforce — add, edit, or remove employees.</p>
         </div>
-        <button className="btn-primary" onClick={openCreate}>
-          <UserPlus size={18} />
-          Add Employee
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <input 
+            type="text" 
+            placeholder="Search by name, ID, or email..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ 
+              padding: '0.6rem 1rem', 
+              borderRadius: '8px', 
+              border: '1px solid var(--border-color)', 
+              background: 'var(--surface)', 
+              color: 'var(--text-light)', 
+              width: '260px',
+              outline: 'none'
+            }}
+          />
+          <button className="btn-primary" onClick={openCreate}>
+            <UserPlus size={18} />
+            Add Employee
+          </button>
+        </div>
       </header>
 
       {createdCreds && (
@@ -129,7 +155,7 @@ export default function AdminEmployees() {
             </tr>
           </thead>
           <tbody>
-            {employees.length > 0 ? employees.map((emp) => (
+            {filteredEmployees.length > 0 ? filteredEmployees.map((emp) => (
               <tr key={emp._id}>
                 <td><strong>{emp.employeeId}</strong></td>
                 <td>
