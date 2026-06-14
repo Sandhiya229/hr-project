@@ -174,9 +174,9 @@ export default function EmployeeDashboard() {
         {filteredProjects.length > 0 ? (
           filteredProjects.map((proj) => (
             <div key={proj._id} className="project-card premium-card animate-fade-in">
-              <div className="card-top">
+              <div className="card-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <span className={`status-tag status-${proj.status}`}>{proj.status}</span>
-                <span className="proj-id">ID: {proj.projectId}</span>
+                <span className="proj-id" style={{ color: 'var(--text-light)', fontWeight: 'bold' }}>ID: {proj.projectId}</span>
               </div>
               
               <div className="card-content">
