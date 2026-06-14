@@ -60,7 +60,28 @@ export default function AdminEmployees() {
     onSuccess: () => qc.invalidateQueries(['adminEmployees']),
   });
 
-  const openCreate = () => { setForm(EMPTY_FORM); setEditId(null); setError(''); setShowModal(true); };
+  const generateNextEmployeeId = () => {
+    if (!employees || employees.length === 0) return 'EMP001';
+    
+    // Extract numbers from existing employee IDs to find the highest one
+    const numbers = employees.map(emp => {
+      const match = emp.employeeId.match(/\d+$/);
+      return match ? parseInt(match[0], 10) : 0;
+    });
+    
+    const maxNumber = Math.max(...numbers, 0);
+    const nextNumber = maxNumber + 1;
+    
+    // Format as EMP001, EMP002, etc.
+    return `EMP${String(nextNumber).padStart(3, '0')}`;
+  };
+
+  const openCreate = () => { 
+    setForm({ ...EMPTY_FORM, employeeId: generateNextEmployeeId() }); 
+    setEditId(null); 
+    setError(''); 
+    setShowModal(true); 
+  };
   
   const openEdit = (emp) => {
     setForm({
