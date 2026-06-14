@@ -4,10 +4,12 @@ import api from '../api/axiosInstance';
 import { UserPlus, Pencil, Trash2, X, Check, User, Briefcase, Phone, Building2, Calendar, DollarSign, Hash, Key, Mail, Droplets, Users } from 'lucide-react';
 import './AdminEmployees.css';
 
+const today = new Date().toISOString().split('T')[0];
+
 const EMPTY_FORM = {
   employeeId: '', name: '', email: '',
-  dateOfBirth: '', joiningDate: '', phone: '',
-  gender: 'Male', bloodGroup: '',
+  dateOfBirth: today, joiningDate: today, phone: '',
+  gender: 'Male', bloodGroup: 'O+',
   department: '', designation: '', basicPay: '',
 };
 
@@ -213,7 +215,16 @@ export default function AdminEmployees() {
 
                 <div className="form-field">
                   <label><Droplets size={14} /> Blood Group</label>
-                  <input name="bloodGroup" value={form.bloodGroup} onChange={onChange} placeholder="e.g. O+" required />
+                  <select name="bloodGroup" value={form.bloodGroup} onChange={onChange} required>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
                 </div>
 
                 <div className="form-field">
