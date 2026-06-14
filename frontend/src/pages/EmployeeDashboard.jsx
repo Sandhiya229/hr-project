@@ -32,12 +32,19 @@ export default function EmployeeDashboard() {
     onError: (e) => alert(e?.message || 'Failed to update progress'),
   });
 
+  const [searchQuery, setSearchQuery] = useState(''); // Added search state
   const projects = data?.data || [];
   
-  // Filter Logic
-  const filteredProjects = filterStatus === 'all' 
-    ? projects 
-    : projects.filter(p => p.status === filterStatus);
+  // Filter Logic (Combines status filter and search query)
+  const filteredProjects = projects.filter(p => {
+    const matchesStatus = filterStatus === 'all' || p.status === filterStatus;
+    const matchesSearch = 
+      p.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.projectId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+    return matchesStatus && matchesSearch;
+  });
 
   const completed = projects.filter(p => p.status === 'completed').length;
   const ongoing = projects.filter(p => p.status === 'ongoing').length;
@@ -135,15 +142,32 @@ export default function EmployeeDashboard() {
 
       <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h2 style={{ margin: 0 }}>{isProjectsPage ? 'All Projects' : 'My Projects Timeline'}</h2>
-        {filterStatus !== 'all' && !isProjectsPage && (
-          <button 
-            className="btn-ghost" 
-            onClick={() => setFilterStatus('all')}
-            style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-          >
-            <X size={14} /> Clear Filter ({filterStatus})
-          </button>
-        )}
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <input 
+            type="text" 
+            placeholder="Search projects by name, ID..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ 
+              padding: '0.6rem 1rem', 
+              borderRadius: '8px', 
+              border: '1px solid var(--border-color)', 
+              background: 'var(--surface)', 
+              color: 'var(--text-light)', 
+              width: '260px',
+              outline: 'none'
+            }}
+          />
+          {filterStatus !== 'all' && !isProjectsPage && (
+            <button 
+              className="btn-ghost" 
+              onClick={() => setFilterStatus('all')}
+              style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <X size={14} /> Clear ({filterStatus})
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="projects-grid">
