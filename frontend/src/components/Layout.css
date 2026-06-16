@@ -6,11 +6,12 @@
 }
 
 .mini-logo-nav {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 160px;
+  height: auto;
+  border-radius: 8px;
   background: black;
   box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+  object-fit: contain;
 }
 
 .brand-name {
@@ -38,10 +39,22 @@
 }
 
 .sidebar-header {
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.logo-mobile {
+  display: flex;
+  align-items: center;
+  gap: 0;
 }
 
 .sidebar-nav {
