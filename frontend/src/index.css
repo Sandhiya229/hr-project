@@ -77,10 +77,19 @@ input, textarea, select {
   padding: 0 1rem;
 }
 
-.glass-panel {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+.glass-body {
+  background: var(--bg-primary);
+  backdrop-filter: blur(12px);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(10px);
+  padding: 2rem;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-fast) ease-out, transform var(--transition-fast) ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
 }

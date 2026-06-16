@@ -31,7 +31,7 @@ export default function AdminDashboard() {
 
   const statCards = [
     { id: 'employees-count', title: 'Total Employees', value: totalEmployees || 0, icon: <Users size={24} className="accent-icon" />, bg: 'var(--accent-light)' },
-    { id: 'all', title: 'Total Projects', value: totalProjects || 0, icon: <Briefcase size={24} style={{ color: '#3b82f6' }} />, bg: '#dbeafe' },
+    { id: 'all', title: 'Total Projects', value: totalProjects || 0, icon: <Briefcase size={24} style={{ color: 'var(--accent)' }} />, bg: 'var(--accent-light)' },
     { id: 'completed', title: 'Completed Projects', value: completedProjects || 0, icon: <CheckCircle size={24} style={{ color: 'var(--success)' }} />, bg: 'var(--success-light)' },
     { id: 'ongoing', title: 'Ongoing Projects', value: ongoingProjects || 0, icon: <Clock size={24} style={{ color: 'var(--warning)' }} />, bg: 'var(--warning-light)' },
   ];
@@ -39,13 +39,13 @@ export default function AdminDashboard() {
   const projectFilterIds = ['all', 'completed', 'ongoing'];
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container glass-body">
       <header className="page-header">
         <h1>Admin Overview</h1>
         <p>Monitor your company's high-level metrics.</p>
       </header>
 
-      <div className="stats-grid">
+      <div className="stats-grid reveal">
         {statCards.map((stat) => (
           <div 
             key={stat.id} 
@@ -64,11 +64,11 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      <div className="dashboard-section glass-panel">
-        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="dashboard-section glass-panel reveal">
+        <div className="section-header flex-between">
           <h2>{filterStatus === 'all' ? 'Recent Projects' : `${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} Projects`}</h2>
           {filterStatus !== 'all' && (
-            <button className="btn-ghost" onClick={() => setFilterStatus('all')} style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <button className="btn-ghost flex-center" onClick={() => setFilterStatus('all')}>
               <X size={14} /> Clear Filter
             </button>
           )}

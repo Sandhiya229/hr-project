@@ -84,7 +84,7 @@ export default function EmployeeDashboard() {
   if (isLoading) return <div className="loading-screen animate-pulse-glow">Loading Dashboard...</div>;
 
   return (
-    <div className={`dashboard-container animate-fade-in ${isProjectsPage ? 'projects-view' : ''}`}>
+    <div className={`dashboard-container glass-body animate-fade-in ${isProjectsPage ? 'projects-view' : ''}`>
       <header className="page-header">
         <div>
           <h1>{isProjectsPage ? 'My Projects' : 'My Dashboard'}</h1>
@@ -97,13 +97,13 @@ export default function EmployeeDashboard() {
       </header>
 
       {!isProjectsPage && (
-        <div className="stats-grid">
+        <div className="stats-grid reveal">
           <div 
             className={`stat-card glass-panel ${filterStatus === 'all' ? 'active-filter' : ''}`}
             onClick={() => setFilterStatus('all')}
             style={{ cursor: 'pointer' }}
           >
-            <div className="stat-icon-wrapper" style={{ background: '#3b82f6' }}>
+            <div className="stat-icon-wrapper" style={{ background: 'var(--accent)' }}>
               <Briefcase size={28} />
             </div>
             <div className="stat-info">
@@ -116,7 +116,7 @@ export default function EmployeeDashboard() {
             onClick={() => setFilterStatus('completed')}
             style={{ cursor: 'pointer' }}
           >
-            <div className="stat-icon-wrapper" style={{ background: '#10b981' }}>
+            <div className="stat-icon-wrapper" style={{ background: 'var(--success)' }}>
               <CheckCircle size={28} />
             </div>
             <div className="stat-info">
@@ -129,7 +129,7 @@ export default function EmployeeDashboard() {
             onClick={() => setFilterStatus('ongoing')}
             style={{ cursor: 'pointer' }}
           >
-            <div className="stat-icon-wrapper" style={{ background: '#f59e0b' }}>
+            <div className="stat-icon-wrapper" style={{ background: 'var(--warning)' }}>
               <Clock size={28} />
             </div>
             <div className="stat-info">
@@ -159,11 +159,7 @@ export default function EmployeeDashboard() {
             }}
           />
           {filterStatus !== 'all' && !isProjectsPage && (
-            <button 
-              className="btn-ghost" 
-              onClick={() => setFilterStatus('all')}
-              style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-            >
+            <button className="btn-ghost flex-center" onClick={() => setFilterStatus('all')}>
               <X size={14} /> Clear ({filterStatus})
             </button>
           )}
