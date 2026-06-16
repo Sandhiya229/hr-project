@@ -6,23 +6,23 @@
 }
 
 .mini-logo-nav {
-  width: 40px; /* smaller circular logo */
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: black;
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+  background: var(--brand-gradient);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 10px rgba(209, 154, 46, 0.15);
   margin-right: 0.5rem;
   display: inline-block;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .brand-name {
-  font-size: 2.5rem; /* clearer, more prominent text */
-  letter-spacing: 2px;
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
   font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 4px rgba(0,0,0,0.4);
 }
 
 /* Sidebar Styling */
@@ -118,8 +118,8 @@
 /* Ensure logos are circular and properly sized */
 .logo img,
 .logo-mobile img {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
 }

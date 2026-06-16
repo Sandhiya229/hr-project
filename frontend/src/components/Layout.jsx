@@ -30,7 +30,7 @@ export default function Layout({ children }) {
   const links = user?.role === 'admin' ? adminLinks : employeeLinks;
 
   return (
-    <div className="layout-container example-theme">
+    <div className="layout-container">
       {/* Mobile Topbar */}
       <div className="mobile-topbar glass-panel">
         <div className="logo-mobile">
