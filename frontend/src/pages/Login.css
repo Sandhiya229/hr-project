@@ -81,22 +81,21 @@
 /* Welcome Section Left */
 .mini-logo-container {
   position: absolute;
-  top: 2.5rem;
-  left: 2.5rem;
-  width: 200px;
-  height: auto;
+  top: 3.5rem;
+  left: 3.5rem;
+  width: 70px;
+  height: 70px;
   z-index: 100;
   animation: fadeIn 1s ease-out;
 }
 
 .mini-logo {
   width: 100%;
-  height: auto;
-  border-radius: 12px;
+  height: 100%;
+  border-radius: 50%;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(99, 102, 241, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   background: black;
-  object-fit: contain;
 }
 
 .welcome-section {

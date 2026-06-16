@@ -35,6 +35,7 @@ export default function Layout({ children }) {
       <div className="mobile-topbar glass-panel">
         <div className="logo-mobile">
           <img src="/shatechx-mini.png" alt="Logo" className="mini-logo-nav" />
+          <span>SHATECHX</span>
         </div>
         <button onClick={() => setSidebarOpen(true)} className="icon-btn">
           <Menu size={24} />
@@ -51,6 +52,7 @@ export default function Layout({ children }) {
         <div className="sidebar-header">
           <div className="logo">
             <img src="/shatechx-mini.png" alt="Logo" className="mini-logo-nav" />
+            <span className="brand-name">SHATECHX</span>
           </div>
           <button className="mobile-close icon-btn" onClick={() => setSidebarOpen(false)}>
             <X size={24} />
