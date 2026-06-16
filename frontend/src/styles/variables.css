@@ -59,3 +59,19 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
 }
+
+/* Example Dashboard Theme (from provided screenshot) */
+.example-theme {
+  --bg-primary: #f5f7fb; /* page background - light off-white */
+  --bg-secondary: #ffffff; /* content background */
+  --bg-tertiary: #f1f5f9; /* cards and surfaces */
+
+  --text-primary: #0f1724; /* dark slate text */
+  --text-secondary: #475569; /* muted text */
+
+  --sidebar-bg: #153447; /* deep blue/teal sidebar */
+  --sidebar-text: #e6f0f6; /* sidebar text */
+  --sidebar-muted: rgba(230, 240, 246, 0.7);
+
+  --main-bg: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+}
