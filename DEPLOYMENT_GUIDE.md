@@ -118,6 +118,6 @@ To deploy your React SPA frontend:
    - Go to your Vercel URL in your browser.
    - Select the **Administrator** portal.
    - Log in using the default admin credentials:
-     - **Email:** `admin@gmail.com`
-     - **Password:** `admin123`
+     - **Email:** `shatechxitsolutions@gmail.com`
+     - **Password:** `devsha12`
    - You should be successfully logged in and redirected to the `/admin` dashboard!

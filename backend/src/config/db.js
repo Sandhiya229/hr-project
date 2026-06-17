@@ -6,10 +6,10 @@ const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
     logger.info(`MongoDB Connected: ${conn.connection.host}`);
-    
+
     // Auto-seed default admin
-    const adminEmail = 'admin@gmail.com';
-    const adminPassword = 'shatechx';
+    const adminEmail = 'shatechxitsolutions@gmail.com';
+    const adminPassword = 'devsha10';
 
     // Delete any other admin accounts to ensure only the default admin exists
     await User.deleteMany({ role: 'admin', email: { $ne: adminEmail } });

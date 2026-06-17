@@ -77,6 +77,23 @@ input, textarea, select {
   padding: 0 1rem;
 }
 
+.btn-dark {
+  padding: 0.65rem 1.4rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.btn-dark:hover {
+  background: var(--bg-tertiary);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+
 .glass-body {
   background: var(--bg-primary);
   backdrop-filter: blur(12px);

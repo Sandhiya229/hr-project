@@ -6,12 +6,12 @@ await mongoose.connect(process.env.MONGODB_URI);
 console.log('Connected to MongoDB');
 
 /*
-const existing = await User.findOne({ email: 'admin@company.com' });
+const existing = await User.findOne({ email: 'shatechxitsolutions@gmail.com' });
 if (existing) {
-  console.log('Admin user already exists. Email: admin@company.com / Password: Admin@123');
+  console.log('Admin user already exists. Email: shatechxitsolutions@gmail.com / Password: devsha12');
 } else {
-  await User.create({ email: 'admin@company.com', password: 'Admin@123', role: 'admin' });
-  console.log('✅ Admin user created! Email: admin@company.com / Password: Admin@123');
+  await User.create({ email: 'shatechxitsolutions@gmail.com', password: 'devsha12', role: 'admin' });
+  console.log('✅ Admin user created! Email: shatechxitsolutions@gmail.com / Password: devsha12');
 }
 */
 console.log('Seed skipped. Use the interactive setup on the login page.');
