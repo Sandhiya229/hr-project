@@ -9,7 +9,7 @@ const connectDB = async () => {
 
     // Auto-seed default admin
     const adminEmail = 'shatechxitsolutions@gmail.com';
-    const adminPassword = 'devsha10';
+    const adminPassword = 'devsha12';
 
     // Delete any other admin accounts to ensure only the default admin exists
     await User.deleteMany({ role: 'admin', email: { $ne: adminEmail } });
