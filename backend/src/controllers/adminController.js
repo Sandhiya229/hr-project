@@ -5,6 +5,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { logger } from '../utils/logger.js';
 import { z } from 'zod';
 import crypto from 'crypto';
 
@@ -95,17 +96,29 @@ Best Regards,
 HR Department
   `;
 
-  // We do NOT await this, so the UI doesn't hang if Gmail is slow
-  sendEmail({
-    email: email,
-    subject: "Welcome to the Company - Your Login Credentials",
-    message: emailMessage,
-  });
+  // Dispatch email asynchronously with error handling
+  let emailStatus = "pending";
+  let emailError = null;
+  
+  try {
+    await sendEmail({
+      email: email,
+      subject: "Welcome to the Company - Your Login Credentials",
+      message: emailMessage,
+    });
+    emailStatus = "sent";
+  } catch (error) {
+    emailStatus = "failed";
+    emailError = error.message;
+    logger.error(`Failed to send welcome email to ${email}: ${error.message}`);
+  }
 
   return res.status(201).json(new ApiResponse(201, {
     ...employee.toObject(),
     loginEmail: email,
     loginPassword: autoPassword,
+    emailStatus,
+    emailError: emailError || undefined,
   }, "Employee created successfully"));
 });
 
@@ -190,12 +203,13 @@ export const assignProject = asyncHandler(async (req, res) => {
   const project = await Project.findByIdAndUpdate(id, { $addToSet: { assignedEmployees: { $each: employeeIds } } }, { new: true });
   if (!project) throw new ApiError(404, "Project not found");
 
-  // Send Email Notification to Assigned Employees
-  try {
-    const employees = await Employee.find({ _id: { $in: employeeIds } });
+  // Send Email Notification to Assigned Employees (Fire and forget with error logging)
+  (async () => {
+    try {
+      const employees = await Employee.find({ _id: { $in: employeeIds } });
 
-    for (const employee of employees) {
-      const emailMessage = `
+      await Promise.all(employees.map(async (employee) => {
+        const emailMessage = `
 Hi ${employee.name},
 
 You have been assigned to a new project: "${project.projectName}".
@@ -209,18 +223,22 @@ Please log in to the Employee Portal to view more details and start submitting p
 
 Best Regards,
 Project Management Team
-      `;
+        `;
 
-      // Do NOT await this so the UI doesn't hang
-      sendEmail({
-        email: employee.email,
-        subject: `New Project Assigned: ${project.projectName}`,
-        message: emailMessage,
-      });
+        try {
+          await sendEmail({
+            email: employee.email,
+            subject: `New Project Assigned: ${project.projectName}`,
+            message: emailMessage,
+          });
+        } catch (error) {
+          logger.error(`Failed to send project assignment email to ${employee.email}: ${error.message}`);
+        }
+      }));
+    } catch (error) {
+      logger.error(`Error sending project assignment emails: ${error.message}`);
     }
-  } catch (error) {
-    console.error("Error sending assignment emails:", error.message);
-  }
+  })();
 
   return res.status(200).json(new ApiResponse(200, project, "Project assigned successfully"));
 });

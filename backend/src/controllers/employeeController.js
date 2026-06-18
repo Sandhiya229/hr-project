@@ -5,6 +5,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { logger } from '../utils/logger.js';
 import { z } from 'zod';
 
 export const getMyProjects = asyncHandler(async (req, res) => {
@@ -91,7 +92,7 @@ EPMS Automation System
       });
     }
   } catch (error) {
-    console.error("Error sending admin notification email:", error.message);
+    logger.error(`Error sending admin notification email: ${error.message}`);
   }
 
   return res.status(200).json(new ApiResponse(200, project, "Project progress updated successfully"));

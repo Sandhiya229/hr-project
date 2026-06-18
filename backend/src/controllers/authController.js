@@ -6,6 +6,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { logger } from '../utils/logger.js';
 import { z } from 'zod';
 
 const generateAccessToken = (userId, role) => {
@@ -179,7 +180,7 @@ Employee Management Portal
         "Check your email for password reset instructions"
       ));
   } catch (error) {
-    console.error('Email sending error:', error.message);
+    logger.error(`Email sending error: ${error.message}`);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save();

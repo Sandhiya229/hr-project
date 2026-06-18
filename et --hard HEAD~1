@@ -1,0 +1,25 @@
+[33m51a5669[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Add employee search functionality and fix modal JSX rendering
+[33m1903077[m Set admin credentials to shatechxitsolutions@gmail.com / devsha12
+[33mfae71a5[m Update admin credentials to shatechxitsolutions and devsha12
+[33mf1a6bc9[m feat: full UI polish – glass‑morphism, token‑based colors, scroll‑reveal
+[33m1d9e9b8[m Style: restore stealth dark mode theme and add modern Google Fonts
+[33m38908f4[m Refine SHATECHX logo: smaller circular shape, clearer brand text
+[33m1df9bcf[m Fix SHATECHX logo: proper circular shape, size adjustment, alignment fixes
+[33ma56ab6b[m Make SHATECHX logo bigger and clearer with visible text branding
+[33m3235b6c[m Update SHATECHX logo with new dark theme branding
+[33m73270bc[m Move project ID to the right corner of the card
+[33m8fe4ea0[m Add spacing to the left side of the ID column
+[33m9ac15ea[m Auto-generate sequential employee ID
+[33md4e1ef4[m Fix table spacing between ID and Name
+[33mc0d1a3c[m Add project search functionality
+[33m8af82c9[m Add project search functionality
+[33m4f11bb8[m Add employee search functionality
+[33ma3adc75[m Set default dates and change blood group to a dropdown list
+[33m766e1e9[m Update assign modal to single selection and change button text
+[33m469edc3[m Switch email system from Gmail to Resend API
+[33md1435e2[m Fix rate limit proxy error and email timeout
+[33m0f9ca6c[m Fix email hanging issue by making it async
+[33mef73ed6[m Update production API URL
+[33m322d814[m Update production API URL
+[33m294c0f3[m Update API URL
+[33me02a1e6[m Initial commit
