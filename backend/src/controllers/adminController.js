@@ -51,9 +51,7 @@ const createEmployeeSchema = z.object({
 });
 
 export const createEmployee = asyncHandler(async (req, res) => {
-  console.log("EMAIL_USER:", process.env.EMAIL_USER);
-  console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
-  console.log("Trying to send email to:", options.email);
+
   const result = createEmployeeSchema.safeParse(req.body);
   if (!result.success) {
     const errorMsgs = result.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join(' | ');
@@ -97,32 +95,18 @@ Best Regards,
 HR Department
   `;
 
-  console.log("Employee created");
-  console.log("Sending email to:", email);
+  // We do NOT await this, so the UI doesn't hang if Gmail is slow
+  sendEmail({
+    email: email,
+    subject: "Welcome to the Company - Your Login Credentials",
+    message: emailMessage,
+  });
 
-  try {
-    await sendEmail({
-      email: email,
-      subject: "Welcome to the Company - Your Login Credentials",
-      message: emailMessage,
-    });
-
-    console.log("✅ Email sent successfully");
-  } catch (error) {
-    console.error("❌ Email sending failed:", error);
-  }
-
-  return res.status(201).json(
-    new ApiResponse(
-      201,
-      {
-        ...employee.toObject(),
-        loginEmail: email,
-        loginPassword: autoPassword,
-      },
-      "Employee created successfully"
-    )
-  );
+  return res.status(201).json(new ApiResponse(201, {
+    ...employee.toObject(),
+    loginEmail: email,
+    loginPassword: autoPassword,
+  }, "Employee created successfully"));
 });
 
 export const getEmployees = asyncHandler(async (req, res) => {
