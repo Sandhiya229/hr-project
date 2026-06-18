@@ -8,19 +8,13 @@ import {
   Menu,
   X 
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import initScrollReveal from '../utils/scrollReveal';
+import { useState } from 'react';
 import './Layout.css';
 
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Initialize scroll‑reveal once
-  useEffect(() => {
-    initScrollReveal();
-  }, []);
 
   const adminLinks = [
     { name: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={20} /> },
@@ -36,7 +30,7 @@ export default function Layout({ children }) {
   const links = user?.role === 'admin' ? adminLinks : employeeLinks;
 
   return (
-    <div className="layout-container glass-body">
+    <div className="layout-container example-theme">
       {/* Mobile Topbar */}
       <div className="mobile-topbar glass-panel">
         <div className="logo-mobile">

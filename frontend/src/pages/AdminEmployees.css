@@ -43,7 +43,7 @@
 
 .data-table th,
 .data-table td {
-  padding: 1.25rem 0; /* No horizontal padding */
+  padding: 1.25rem 0.5rem; /* Added horizontal padding for better spacing */
   border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
 }
@@ -55,6 +55,16 @@
   letter-spacing: 0.06em;
   color: var(--text-secondary);
   background: var(--bg-tertiary);
+}
+
+/* Align specific columns */
+.data-table th:nth-child(3),
+.data-table td:nth-child(3),
+.data-table th:nth-child(4),
+.data-table td:nth-child(4),
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+  text-align: center;
 }
 
 .data-table tbody tr:last-child td { border-bottom: none; }

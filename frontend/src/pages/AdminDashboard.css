@@ -103,6 +103,16 @@
   background: transparent;
 }
 
+/* Align specific columns: Date of Joining, Department, Designation */
+.data-table th:nth-child(3),
+.data-table td:nth-child(3),
+.data-table th:nth-child(4),
+.data-table td:nth-child(4),
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+  text-align: center;
+}
+
 .data-table td {
   padding: 1.5rem 0;
   background: rgba(255, 255, 255, 0.02);

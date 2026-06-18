@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import api from '../api/axiosInstance';
 import './Login.css';
 
 const loginSchema = z.object({

@@ -34,15 +34,15 @@ export default function EmployeeDashboard() {
 
   const [searchQuery, setSearchQuery] = useState(''); // Added search state
   const projects = data?.data || [];
-  
+
   // Filter Logic (Combines status filter and search query)
   const filteredProjects = projects.filter(p => {
     const matchesStatus = filterStatus === 'all' || p.status === filterStatus;
-    const matchesSearch = 
+    const matchesSearch =
       p.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.projectId.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
-      
+
     return matchesStatus && matchesSearch;
   });
 
@@ -70,27 +70,27 @@ export default function EmployeeDashboard() {
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
     if (!updateForm.message.trim()) return alert('Please enter a summary message');
-    
+
     const formData = new FormData();
     formData.append('message', updateForm.message);
     formData.append('status', updateForm.status);
     if (updateForm.file) {
       formData.append('attachment', updateForm.file);
     }
-    
+
     updateProgressMutation.mutate({ id: selectedProject._id, formData });
   };
 
   if (isLoading) return <div className="loading-screen animate-pulse-glow">Loading Dashboard...</div>;
 
   return (
-    <div className={`dashboard-container glass-body animate-fade-in ${isProjectsPage ? 'projects-view' : ''}`>
+    <div className={`dashboard-container glass-body animate-fade-in ${isProjectsPage ? 'projects-view' : ''}`}>
       <header className="page-header">
         <div>
           <h1>{isProjectsPage ? 'My Projects' : 'My Dashboard'}</h1>
           <p>
-            {isProjectsPage 
-              ? 'View all your assigned projects and manage their progress.' 
+            {isProjectsPage
+              ? 'View all your assigned projects and manage their progress.'
               : 'Track your assigned projects, submit updates, and upload finished work.'}
           </p>
         </div>
@@ -98,7 +98,7 @@ export default function EmployeeDashboard() {
 
       {!isProjectsPage && (
         <div className="stats-grid reveal">
-          <div 
+          <div
             className={`stat-card glass-panel ${filterStatus === 'all' ? 'active-filter' : ''}`}
             onClick={() => setFilterStatus('all')}
             style={{ cursor: 'pointer' }}
@@ -111,7 +111,7 @@ export default function EmployeeDashboard() {
               <p className="stat-value">{projects.length}</p>
             </div>
           </div>
-          <div 
+          <div
             className={`stat-card glass-panel ${filterStatus === 'completed' ? 'active-filter' : ''}`}
             onClick={() => setFilterStatus('completed')}
             style={{ cursor: 'pointer' }}
@@ -124,7 +124,7 @@ export default function EmployeeDashboard() {
               <p className="stat-value">{completed}</p>
             </div>
           </div>
-          <div 
+          <div
             className={`stat-card glass-panel ${filterStatus === 'ongoing' ? 'active-filter' : ''}`}
             onClick={() => setFilterStatus('ongoing')}
             style={{ cursor: 'pointer' }}
@@ -143,17 +143,17 @@ export default function EmployeeDashboard() {
       <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h2 style={{ margin: 0 }}>{isProjectsPage ? 'All Projects' : 'My Projects Timeline'}</h2>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <input 
-            type="text" 
-            placeholder="Search projects by name, ID..." 
+          <input
+            type="text"
+            placeholder="Search projects by name, ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ 
-              padding: '0.6rem 1rem', 
-              borderRadius: '8px', 
-              border: '1px solid var(--border-color)', 
-              background: 'var(--surface)', 
-              color: 'var(--text-light)', 
+            style={{
+              padding: '0.6rem 1rem',
+              borderRadius: '8px',
+              border: '1px solid var(--border-color)',
+              background: 'var(--surface)',
+              color: 'var(--text-light)',
               width: '260px',
               outline: 'none'
             }}
@@ -174,11 +174,11 @@ export default function EmployeeDashboard() {
                 <span className={`status-tag status-${proj.status}`}>{proj.status}</span>
                 <span className="proj-id" style={{ color: 'var(--text-light)', fontWeight: 'bold' }}>ID: {proj.projectId}</span>
               </div>
-              
+
               <div className="card-content">
                 <h3 className="proj-title">{proj.projectName}</h3>
                 <p className="proj-description">{proj.description}</p>
-                
+
                 <div className="card-grid-meta">
                   <div className="meta-box">
                     <Calendar size={14} />
@@ -213,82 +213,84 @@ export default function EmployeeDashboard() {
         )}
       </div>
 
-      {showUpdateModal && selectedProject && (
-        <div className="emp-modal-overlay" onClick={closeModal}>
-          <div className="emp-modal absolute-center" onClick={(e) => e.stopPropagation()}>
-            <div className="emp-modal-header">
-              <div className="emp-modal-icon">
-                <Briefcase size={26} />
+      {
+        showUpdateModal && selectedProject && (
+          <div className="emp-modal-overlay" onClick={closeModal}>
+            <div className="emp-modal absolute-center" onClick={(e) => e.stopPropagation()}>
+              <div className="emp-modal-header">
+                <div className="emp-modal-icon">
+                  <Briefcase size={26} />
+                </div>
+                <div>
+                  <h2>Submit Progress Update</h2>
+                  <p>Update the status and provide details for <strong>{selectedProject.projectName}</strong></p>
+                </div>
+                <button className="modal-close-btn" onClick={closeModal}><X size={20} /></button>
               </div>
-              <div>
-                <h2>Submit Progress Update</h2>
-                <p>Update the status and provide details for <strong>{selectedProject.projectName}</strong></p>
-              </div>
-              <button className="modal-close-btn" onClick={closeModal}><X size={20} /></button>
-            </div>
-            
-            <form onSubmit={handleUpdateSubmit} className="emp-form">
-              <div className="emp-form-grid">
-                <div className="form-field full-span">
-                  <label><Briefcase size={14} /> Project Name</label>
-                  <input value={selectedProject.projectName} disabled className="bg-gray-50" />
-                </div>
-                
-                <div className="form-field full-span">
-                  <label><FileUp size={14} /> Summary of Work Completed *</label>
-                  <textarea 
-                    value={updateForm.message} 
-                    onChange={(e) => setUpdateForm({...updateForm, message: e.target.value})}
-                    rows={4} 
-                    required
-                    placeholder="Describe what you worked on, milestones hit, etc..."
-                  />
-                </div>
 
-                <div className="form-field">
-                  <label><Clock size={14} /> Update Status</label>
-                  <select 
-                    value={updateForm.status} 
-                    onChange={(e) => setUpdateForm({...updateForm, status: e.target.value})}
-                  >
-                    <option value="planned">Planned</option>
-                    <option value="ongoing">Ongoing</option>
-                    <option value="completed">Completed (Final Work)</option>
-                  </select>
-                </div>
+              <form onSubmit={handleUpdateSubmit} className="emp-form">
+                <div className="emp-form-grid">
+                  <div className="form-field full-span">
+                    <label><Briefcase size={14} /> Project Name</label>
+                    <input value={selectedProject.projectName} disabled className="bg-gray-50" />
+                  </div>
 
-                <div className="form-field">
-                  <label><Upload size={14} /> Attachment / Proof</label>
-                  <div className="upload-box" style={{ padding: '0.5rem' }}>
-                    <input 
-                      type="file" 
-                      className="upload-input" 
-                      onChange={handleFileChange}
-                      accept="*/*"
+                  <div className="form-field full-span">
+                    <label><FileUp size={14} /> Summary of Work Completed *</label>
+                    <textarea
+                      value={updateForm.message}
+                      onChange={(e) => setUpdateForm({ ...updateForm, message: e.target.value })}
+                      rows={4}
+                      required
+                      placeholder="Describe what you worked on, milestones hit, etc..."
                     />
-                    <div className="upload-label" style={{ flexDirection: 'row', gap: '0.5rem', fontSize: '0.85rem' }}>
-                      <FileUp size={20} />
-                      {updateForm.file ? (
-                        <span className="file-name">{updateForm.file.name}</span>
-                      ) : (
-                        <span>Click to upload</span>
-                      )}
+                  </div>
+
+                  <div className="form-field">
+                    <label><Clock size={14} /> Update Status</label>
+                    <select
+                      value={updateForm.status}
+                      onChange={(e) => setUpdateForm({ ...updateForm, status: e.target.value })}
+                    >
+                      <option value="planned">Planned</option>
+                      <option value="ongoing">Ongoing</option>
+                      <option value="completed">Completed (Final Work)</option>
+                    </select>
+                  </div>
+
+                  <div className="form-field">
+                    <label><Upload size={14} /> Attachment / Proof</label>
+                    <div className="upload-box" style={{ padding: '0.5rem' }}>
+                      <input
+                        type="file"
+                        className="upload-input"
+                        onChange={handleFileChange}
+                        accept="*/*"
+                      />
+                      <div className="upload-label" style={{ flexDirection: 'row', gap: '0.5rem', fontSize: '0.85rem' }}>
+                        <FileUp size={20} />
+                        {updateForm.file ? (
+                          <span className="file-name">{updateForm.file.name}</span>
+                        ) : (
+                          <span>Click to upload</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="emp-modal-actions">
-                <button type="button" className="btn-secondary" onClick={closeModal}>Cancel</button>
-                <button type="submit" className="btn-primary" disabled={updateProgressMutation.isPending}>
-                  <Check size={16} />
-                  {updateProgressMutation.isPending ? 'Uploading...' : 'Submit Update'}
-                </button>
-              </div>
-            </form>
+                <div className="emp-modal-actions">
+                  <button type="button" className="btn-secondary" onClick={closeModal}>Cancel</button>
+                  <button type="submit" className="btn-primary" disabled={updateProgressMutation.isPending}>
+                    <Check size={16} />
+                    {updateProgressMutation.isPending ? 'Uploading...' : 'Submit Update'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }

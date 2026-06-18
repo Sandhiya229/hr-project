@@ -6,21 +6,18 @@
 }
 
 .mini-logo-nav {
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: var(--brand-gradient);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 10px rgba(209, 154, 46, 0.15);
-  margin-right: 0.5rem;
-  display: inline-block;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: black;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
 }
 
 .brand-name {
-  font-size: 1.1rem;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   font-weight: 800;
-  background: var(--brand-gradient);
+  background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -100,28 +97,16 @@
 
 .avatar {
   background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  display: flex;
   font-weight: 800;
   font-size: 1.2rem;
   box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.5);
-}
-
-/* Flex containers for logo and mobile logo */
-.logo, .logo-mobile {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Ensure logos are circular and properly sized */
-.logo img,
-.logo-mobile img {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
 }
 
 .user-info {

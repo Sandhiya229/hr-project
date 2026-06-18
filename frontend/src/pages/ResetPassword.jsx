@@ -23,7 +23,7 @@ export default function ResetPassword() {
   const [apiError, setApiError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [manualToken, setManualToken] = useState("");
-  const [isManualTokenMode, setIsManualTokenMode] = useState(urlToken === '0');
+  const [isManualTokenMode] = useState(urlToken === '0');
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(resetPasswordSchema),
@@ -41,7 +41,7 @@ export default function ResetPassword() {
         return;
       }
 
-      const response = await axiosInstance.post('/auth/reset-password', {
+      await axiosInstance.post('/auth/reset-password', {
         token: finalToken,
         password: data.password
       });

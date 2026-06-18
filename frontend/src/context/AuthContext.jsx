@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axiosInstance';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     };
     window.addEventListener('unauthorized', handleUnauthorized);
     return () => window.removeEventListener('unauthorized', handleUnauthorized);
-  }, []);
+  }, [qc]);
 
   const login = async (credentials) => {
     const res = await api.post('/auth/login', credentials);
