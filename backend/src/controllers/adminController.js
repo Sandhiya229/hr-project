@@ -14,23 +14,23 @@ const generateTemporaryPassword = (name, dob) => {
   const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const lowercase = 'abcdefghijklmnopqrstuvwxyz';
   const numbers = '0123456789';
-  
+
   const chars = uppercase + lowercase + numbers;
   let password = '';
-  
+
   // Get initials from name (uppercase)
   const initials = name.split(/\s+/).filter(Boolean).map(word => word[0].toUpperCase()).join('');
-  
+
   // Extract date parts
   const [yyyy, mm, dd] = dob.split('-');
-  
+
   // Build password: Initials + DD + MM + Random chars
   password = initials + dd + mm;
-  
+
   // Add random numbers to ensure complexity
   const randomNums = crypto.randomBytes(2).toString('hex').substring(0, 2);
   password += randomNums.toUpperCase();
-  
+
   return password;
 };
 
@@ -95,11 +95,15 @@ HR Department
   `;
 
   // We do NOT await this, so the UI doesn't hang if Gmail is slow
+  console.log("Employee created");
+  console.log("Sending email to:", email);
   sendEmail({
     email: email,
     subject: "Welcome to the Company - Your Login Credentials",
     message: emailMessage,
   });
+
+  console.log("sendEmail function called");
 
   return res.status(201).json(new ApiResponse(201, {
     ...employee.toObject(),
@@ -185,14 +189,14 @@ export const deleteProject = asyncHandler(async (req, res) => {
 export const assignProject = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { employeeIds } = req.body; // Array of employee document IDs
-  
+
   const project = await Project.findByIdAndUpdate(id, { $addToSet: { assignedEmployees: { $each: employeeIds } } }, { new: true });
   if (!project) throw new ApiError(404, "Project not found");
 
   // Send Email Notification to Assigned Employees
   try {
     const employees = await Employee.find({ _id: { $in: employeeIds } });
-    
+
     for (const employee of employees) {
       const emailMessage = `
 Hi ${employee.name},
