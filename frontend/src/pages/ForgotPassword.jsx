@@ -43,7 +43,7 @@ export default function ForgotPassword() {
         }
       }, 4000);
     } catch (error) {
-      setApiError(error.response?.data?.message || error.message || "Failed to send reset link. Please try again.");
+      setApiError(error.message || "Failed to send reset link. Please try again.");
     }
   };
 

@@ -206,108 +206,109 @@ export default function AdminEmployees() {
         </table>
       </div>
 
-      {showModal && <div className="emp-modal-overlay" onClick={closeModal}>
-        <div className="emp-modal glass-body" onClick={(e) => e.stopPropagation()}>
-          <div className="content-wrapper reveal animate-fade-in">
-            <div className="emp-modal-icon">
-              <UserPlus size={26} />
+      {showModal && (
+        <div className="emp-modal-overlay" onClick={closeModal}>
+          <div className="emp-modal glass-body" onClick={(e) => e.stopPropagation()}>
+            <div className="content-wrapper reveal animate-fade-in">
+              <div className="emp-modal-icon">
+                <UserPlus size={26} />
+              </div>
+              <div>
+                <h2>{editId ? 'Edit Employee' : 'Add New Employee'}</h2>
+                <p>{editId ? 'Update employee information below.' : 'Fill in the details to onboard a new team member.'}</p>
+              </div>
+              <button className="modal-close-btn" onClick={closeModal}><X size={20} /></button>
             </div>
-            <div>
-              <h2>{editId ? 'Edit Employee' : 'Add New Employee'}</h2>
-              <p>{editId ? 'Update employee information below.' : 'Fill in the details to onboard a new team member.'}</p>
-            </div>
-            <button className="modal-close-btn" onClick={closeModal}><X size={20} /></button>
+
+            {error && <div className="form-error">{error}</div>}
+
+            <form onSubmit={handleSubmit}>
+              <div className="emp-form-grid">
+
+                <div className="form-field full-span">
+                  <label><Hash size={14} /> Employee ID</label>
+                  <input name="employeeId" value={form.employeeId} onChange={onChange} placeholder="e.g. EMP001" required disabled={!!editId} />
+                  {!editId && <span className="field-hint">Password will be auto-generated (initials + DDMM from DOB) and emailed.</span>}
+                </div>
+
+                <div className="form-field">
+                  <label><User size={14} /> Full Name</label>
+                  <input name="name" value={form.name} onChange={onChange} placeholder="e.g. Jane Doe" required minLength={2} />
+                </div>
+
+                <div className="form-field">
+                  <label><Mail size={14} /> Email ID</label>
+                  <input name="email" type="email" value={form.email} onChange={onChange} placeholder="e.g. jane.doe@gmail.com" required />
+                </div>
+
+                <div className="form-field">
+                  <label><Calendar size={14} /> Date of Birth</label>
+                  <input name="dateOfBirth" type="date" value={form.dateOfBirth} onChange={onChange} required />
+                </div>
+
+                <div className="form-field">
+                  <label><Users size={14} /> Gender</label>
+                  <select name="gender" value={form.gender} onChange={onChange} required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div className="form-field">
+                  <label><Phone size={14} /> Phone Number</label>
+                  <input name="phone" value={form.phone} onChange={onChange} placeholder="e.g. 9876543210" required />
+                </div>
+
+                <div className="form-field">
+                  <label><Droplets size={14} /> Blood Group</label>
+                  <select name="bloodGroup" value={form.bloodGroup} onChange={onChange} required>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                </div>
+
+                <div className="form-field">
+                  <label><Building2 size={14} /> Department</label>
+                  <input name="department" value={form.department} onChange={onChange} placeholder="e.g. Web Development" required />
+                </div>
+
+                <div className="form-field">
+                  <label><Briefcase size={14} /> Designation</label>
+                  <input name="designation" value={form.designation} onChange={onChange} placeholder="e.g. Senior Engineer" required />
+                </div>
+
+                <div className="form-field">
+                  <label><Calendar size={14} /> Date of Joining</label>
+                  <input name="joiningDate" type="date" value={form.joiningDate} onChange={onChange} required />
+                </div>
+
+                <div className="form-field full-span">
+                  <label><DollarSign size={14} /> Basic Pay</label>
+                  <input name="basicPay" type="number" value={form.basicPay} onChange={onChange} placeholder="e.g. 60000" required min={0} />
+                </div>
+
+              </div>
+
+              <div className="emp-modal-actions">
+                <button type="button" className="btn-secondary" onClick={closeModal}>Cancel</button>
+                <button type="submit" className="btn-primary" disabled={createMutation.isPending || updateMutation.isPending}>
+                  <Check size={16} />
+                  {createMutation.isPending || updateMutation.isPending
+                    ? 'Saving...'
+                    : editId ? 'Update Employee' : 'Add Employee'}
+                </button>
+              </div>
+            </form>
           </div>
-
-          {error && <div className="form-error">{error}</div>}
-
-          <form onSubmit={handleSubmit}>
-            <div className="emp-form-grid">
-
-              <div className="form-field full-span">
-                <label><Hash size={14} /> Employee ID</label>
-                <input name="employeeId" value={form.employeeId} onChange={onChange} placeholder="e.g. EMP001" required disabled={!!editId} />
-                {!editId && <span className="field-hint">Password will be auto-generated (initials + DDMM from DOB) and emailed.</span>}
-              </div>
-
-              <div className="form-field">
-                <label><User size={14} /> Full Name</label>
-                <input name="name" value={form.name} onChange={onChange} placeholder="e.g. Jane Doe" required minLength={2} />
-              </div>
-
-              <div className="form-field">
-                <label><Mail size={14} /> Email ID</label>
-                <input name="email" type="email" value={form.email} onChange={onChange} placeholder="e.g. jane.doe@gmail.com" required />
-              </div>
-
-              <div className="form-field">
-                <label><Calendar size={14} /> Date of Birth</label>
-                <input name="dateOfBirth" type="date" value={form.dateOfBirth} onChange={onChange} required />
-              </div>
-
-              <div className="form-field">
-                <label><Users size={14} /> Gender</label>
-                <select name="gender" value={form.gender} onChange={onChange} required>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div className="form-field">
-                <label><Phone size={14} /> Phone Number</label>
-                <input name="phone" value={form.phone} onChange={onChange} placeholder="e.g. 9876543210" required />
-              </div>
-
-              <div className="form-field">
-                <label><Droplets size={14} /> Blood Group</label>
-                <select name="bloodGroup" value={form.bloodGroup} onChange={onChange} required>
-                  <option value="A+">A+</option>
-                  <option value="A-">A-</option>
-                  <option value="B+">B+</option>
-                  <option value="B-">B-</option>
-                  <option value="AB+">AB+</option>
-                  <option value="AB-">AB-</option>
-                  <option value="O+">O+</option>
-                  <option value="O-">O-</option>
-                </select>
-              </div>
-
-              <div className="form-field">
-                <label><Building2 size={14} /> Department</label>
-                <input name="department" value={form.department} onChange={onChange} placeholder="e.g. Web Development" required />
-              </div>
-
-              <div className="form-field">
-                <label><Briefcase size={14} /> Designation</label>
-                <input name="designation" value={form.designation} onChange={onChange} placeholder="e.g. Senior Engineer" required />
-              </div>
-
-              <div className="form-field">
-                <label><Calendar size={14} /> Date of Joining</label>
-                <input name="joiningDate" type="date" value={form.joiningDate} onChange={onChange} required />
-              </div>
-
-              <div className="form-field full-span">
-                <label><DollarSign size={14} /> Basic Pay</label>
-                <input name="basicPay" type="number" value={form.basicPay} onChange={onChange} placeholder="e.g. 60000" required min={0} />
-              </div>
-
-            </div>
-
-            <div className="emp-modal-actions">
-              <button type="button" className="btn-secondary" onClick={closeModal}>Cancel</button>
-              <button type="submit" className="btn-primary" disabled={createMutation.isPending || updateMutation.isPending}>
-                <Check size={16} />
-                {createMutation.isPending || updateMutation.isPending
-                  ? 'Saving...'
-                  : editId ? 'Update Employee' : 'Add Employee'}
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
-      }
+      )}
     </div>
   );
 }

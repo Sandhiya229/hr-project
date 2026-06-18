@@ -51,7 +51,7 @@ export default function ResetPassword() {
         navigate('/login', { replace: true });
       }, 2000);
     } catch (error) {
-      setApiError(error.response?.data?.message || "Failed to reset password. The link may have expired.");
+      setApiError(error.message || "Failed to reset password. The link may have expired.");
     }
   };
 
