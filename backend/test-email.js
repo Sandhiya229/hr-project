@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 
 async function testEmail() {
   console.log("Testing email with:", process.env.EMAIL_USER);
-  
+
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
