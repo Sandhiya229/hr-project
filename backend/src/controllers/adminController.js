@@ -96,29 +96,20 @@ Best Regards,
 HR Department
   `;
 
-  // Dispatch email asynchronously with error handling
-  let emailStatus = "pending";
-  let emailError = null;
-  
-  try {
-    await sendEmail({
-      email: email,
-      subject: "Welcome to the Company - Your Login Credentials",
-      message: emailMessage,
-    });
-    emailStatus = "sent";
-  } catch (error) {
-    emailStatus = "failed";
-    emailError = error.message;
-    logger.error(`Failed to send welcome email to ${email}: ${error.message}`);
-  }
+  // Dispatch welcome email in background (fire-and-forget) so API responds immediately
+  // Errors are logged but don't block the response
+  sendEmail({
+    email: email,
+    subject: "Welcome to the Company - Your Login Credentials",
+    message: emailMessage,
+  }).catch(error => {
+    logger.error(`Background: Failed to send welcome email to ${email}: ${error.message}`);
+  });
 
   return res.status(201).json(new ApiResponse(201, {
     ...employee.toObject(),
     loginEmail: email,
     loginPassword: autoPassword,
-    emailStatus,
-    emailError: emailError || undefined,
   }, "Employee created successfully"));
 });
 
