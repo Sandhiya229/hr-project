@@ -39,7 +39,7 @@ export default function AdminDashboard() {
   const projectFilterIds = ['all', 'completed', 'ongoing'];
 
   return (
-    <div className="dashboard-container glass-body">
+    <div className="dashboard-container">
       <header className="page-header">
         <h1>Admin Overview</h1>
         <p>Monitor your company's high-level metrics.</p>
