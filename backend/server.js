@@ -27,9 +27,39 @@ const __dirname = path.dirname(__filename);
 app.use(helmet({
   crossOriginResourcePolicy: false, // Allow frontend to load images served from this backend
 }));
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+];
+
+// Normalize origin to 'protocol://host' when possible
+const normalizeOrigin = (value) => {
+  if (!value) return value;
+  try {
+    return new URL(value).origin;
+  } catch (e) {
+    return value;
+  }
+};
+
+const allowedNormalized = Array.from(new Set(allowedOrigins.filter(Boolean).map(normalizeOrigin)));
+
+// Note: debug logging removed for production; allowedNormalized retained for runtime matching
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // allow non-browser requests (server-to-server, curl)
+
+    const normalized = normalizeOrigin(origin);
+    if (allowedNormalized.includes(normalized)) {
+      return callback(null, true);
+    }
+
+    console.warn(`CORS denied. Incoming origin: ${origin} (normalized: ${normalized}). Allowed: ${allowedNormalized}`);
+    callback(new Error(`CORS policy denied for origin ${origin}`));
+  },
+  credentials: true,
 }));
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
