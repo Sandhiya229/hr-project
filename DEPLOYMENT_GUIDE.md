@@ -56,6 +56,11 @@ Choose either Render or Railway to deploy your Node.js backend API.
    - `FRONTEND_URL`: `https://your-frontend.vercel.app` (Change this to your actual Vercel URL once the frontend is deployed)
    - `EMAIL_USER`: `sandhiyaviswanathan2004@gmail.com`
    - `EMAIL_PASS`: `epzt ndxx zhwt rkoo`
+   - `SMTP_HOST`: `smtp.gmail.com`
+   - `SMTP_PORT`: `465`
+   - `SMTP_SECURE`: `true`
+   - `SMTP_USER`: `sandhiyaviswanathan2004@gmail.com`
+   - `SMTP_PASS`: `epzt ndxx zhwt rkoo`
 5. **Persistent Disk for File Uploads:**
    Because Render containers are stateless/ephemeral, uploaded files in the `/uploads` directory will be lost on container restart.
    - Go to **Disks** -> **Add Disk**.

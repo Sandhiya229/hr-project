@@ -40,6 +40,12 @@ FRONTEND_URL=http://localhost:5173
 # Email Configuration (Nodemailer)
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password_here
+# Explicit SMTP settings for SSL/465 Gmail (matches the screenshot)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password_here
 
 # Google OAuth Configuration
 GOOGLE_CLIENT_ID=your_google_client_id

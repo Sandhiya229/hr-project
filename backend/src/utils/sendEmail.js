@@ -46,10 +46,12 @@ export const sendEmail = async (options) => {
         };
       } else {
         // Fallback to Gmail SMTP using EMAIL_USER/EMAIL_PASS
+        const port = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 465;
+        const secure = process.env.SMTP_SECURE === 'true' ? true : (port === 465);
         transporterConfig = {
           host: 'smtp.gmail.com',
-          port: 587,
-          secure: false,
+          port,
+          secure,
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,

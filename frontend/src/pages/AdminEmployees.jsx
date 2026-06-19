@@ -105,8 +105,37 @@ export default function AdminEmployees() {
   const closeModal = () => { setShowModal(false); setEditId(null); setError(''); };
   const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
+  const validateForm = () => {
+    const trimmedName = form.name.trim();
+    if (!trimmedName) return 'Name is required.';
+    if (!/^[A-Za-z ]+$/.test(trimmedName)) return 'Name must contain only letters and spaces.';
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!form.email || !emailRegex.test(form.email)) return 'Please enter a valid email address.';
+
+    if (!form.phone || !/^\d{10}$/.test(form.phone)) return 'Phone number must contain exactly 10 digits.';
+
+    if (!form.dateOfBirth) return 'Date of birth is required.';
+    if (!form.joiningDate) return 'Date of joining is required.';
+    if (form.dateOfBirth === form.joiningDate) return 'Date of birth cannot be the same as the joining date.';
+
+    if (!form.department.trim()) return 'Department is required.';
+    if (!form.designation.trim()) return 'Designation is required.';
+
+    const basicPayValue = Number(form.basicPay);
+    if (!form.basicPay || Number.isNaN(basicPayValue) || basicPayValue <= 0) return 'Basic Pay must be a positive number.';
+
+    return null;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     const body = { ...form, basicPay: Number(form.basicPay) };
     if (editId) {
       const { employeeId: _, ...rest } = body;
