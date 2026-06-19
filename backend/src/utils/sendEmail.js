@@ -17,42 +17,68 @@ export const sendEmail = async (options) => {
   console.log(`📧 Email Request: Attempting to send email to ${options.email}`);
   console.log(`   EMAIL_USER configured: ${!!process.env.EMAIL_USER}`);
   console.log(`   EMAIL_PASS configured: ${!!process.env.EMAIL_PASS}`);
+  console.log(`   SMTP_HOST configured: ${!!process.env.SMTP_HOST}`);
+  console.log(`   SMTP_PORT configured: ${!!process.env.SMTP_PORT}`);
   console.log(`   RESEND_API_KEY configured: ${!!process.env.RESEND_API_KEY}`);
 
-  // 1. Try Nodemailer (Gmail) if credentials exist
-  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  // 1. Try Nodemailer (SMTP) if credentials exist (support generic SMTP_HOST/PORT or EMAIL_USER)
+  let attemptedSMTP = false;
+  const smtpConfigured = (process.env.SMTP_HOST && process.env.SMTP_PORT && process.env.SMTP_USER && process.env.SMTP_PASS) || (process.env.EMAIL_USER && process.env.EMAIL_PASS);
+  if (smtpConfigured) {
+    attemptedSMTP = true;
     try {
-      console.log(`🔄 Attempting Nodemailer (Gmail SMTP)...`);
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,  // TLS port (instead of 465 SSL)
-        secure: false,  // TLS not SSL
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-        connectionTimeout: 10000,
-        socketTimeout: 10000,
-      });
+      console.log(`🔄 Attempting Nodemailer (SMTP)...`);
+
+      let transporterConfig;
+      if (process.env.SMTP_HOST) {
+        const port = parseInt(process.env.SMTP_PORT, 10) || 587;
+        const secure = process.env.SMTP_SECURE === 'true' ? true : (port === 465);
+        transporterConfig = {
+          host: process.env.SMTP_HOST,
+          port,
+          secure,
+          auth: {
+            user: process.env.SMTP_USER || process.env.EMAIL_USER,
+            pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
+          },
+          connectionTimeout: 10000,
+          socketTimeout: 10000,
+        };
+      } else {
+        // Fallback to Gmail SMTP using EMAIL_USER/EMAIL_PASS
+        transporterConfig = {
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+          },
+          connectionTimeout: 10000,
+          socketTimeout: 10000,
+        };
+      }
+
+      const transporter = nodemailer.createTransport(transporterConfig);
 
       const mailOptions = {
-        from: `"EPMS System" <${process.env.EMAIL_USER}>`,
+        from: `"EPMS System" <${process.env.SMTP_USER || process.env.EMAIL_USER}>`,
         to: options.email,
         subject: options.subject,
         text: options.message,
       };
 
-      console.log(`⏳ Sending mail (10s timeout)...`);
+      console.log(`⏳ Sending mail (10s timeout) using host ${transporterConfig.host}:${transporterConfig.port}...`);
       const info = await Promise.race([
         transporter.sendMail(mailOptions),
         new Promise((_, reject) => 
           setTimeout(() => reject(new Error('SMTP sendMail timeout after 10 seconds')), 10000)
         )
       ]);
-      
+
       const logMsg = `[${new Date().toISOString()}] SUCCESS (Nodemailer): Sent to ${options.email} - Response: ${info.response}\n`;
       fs.appendFileSync(logFilePath, logMsg);
-      console.log(`✅ SUCCESS: Email sent to ${options.email} via Gmail SMTP`);
+      console.log(`✅ SUCCESS: Email sent to ${options.email} via SMTP`);
       console.log(`   Response: ${info.response}`);
       logger.info(`Email successfully sent to ${options.email} via SMTP. Response: ${info.response}`);
       return;
@@ -102,10 +128,18 @@ export const sendEmail = async (options) => {
     }
   }
 
-  // 3. No email service configured
-  const noConfigMsg = `[${new Date().toISOString()}] SKIP: No email configuration for ${options.email}\n`;
+  // 3. No email service configured or all attempts failed
+  let noConfigMsg;
+  if (attemptedSMTP && !process.env.RESEND_API_KEY) {
+    noConfigMsg = `[${new Date().toISOString()}] SKIP: SMTP attempted and Resend API Key not configured for ${options.email}\n`;
+    console.log(`⚠️  Email NOT sent to ${options.email}`);
+    console.log(`   Reason: SMTP attempted but failed; Resend API Key not configured`);
+    logger.warn("Skipping email dispatch: SMTP attempted but failed, and Resend API Key not configured.");
+  } else {
+    noConfigMsg = `[${new Date().toISOString()}] SKIP: No email configuration for ${options.email}\n`;
+    console.log(`⚠️  Email NOT sent to ${options.email}`);
+    console.log(`   Reason: Neither SMTP nor Resend API Key configured`);
+    logger.warn("Skipping email dispatch: Neither SMTP nor Resend API Key configurations are working/configured.");
+  }
   fs.appendFileSync(logFilePath, noConfigMsg);
-  console.log(`⚠️  Email NOT sent to ${options.email}`);
-  console.log(`   Reason: Neither SMTP nor Resend API Key configured`);
-  logger.warn("Skipping email dispatch: Neither SMTP nor Resend API Key configurations are working/configured.");
 };
