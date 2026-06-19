@@ -21,6 +21,7 @@
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
+  color: var(--text-primary);
 }
 
 .page-header p {
@@ -46,6 +47,7 @@
   padding: 1.25rem 0.5rem; /* Added horizontal padding for better spacing */
   border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
+  color: var(--text-secondary);
 }
 
 .data-table th {
@@ -68,6 +70,7 @@
 }
 
 .data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr { background: var(--bg-primary); }
 .data-table tbody tr:hover { background: var(--bg-secondary); }
 
 /* ---- Buttons ---- */

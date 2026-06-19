@@ -268,7 +268,7 @@ export default function AdminEmployees() {
 
                 <div className="form-field full-span">
                   <label><Hash size={14} /> Employee ID</label>
-                  <input name="employeeId" value={form.employeeId} onChange={onChange} placeholder="e.g. EMP001" required disabled={!!editId} />
+                  <input name="employeeId" value={form.employeeId} onChange={handleInputChange} placeholder="e.g. EMP001" required disabled={!!editId} />
                   {!editId && <span className="field-hint">Password will be auto-generated (initials + DDMM from DOB) and emailed.</span>}
                 </div>
 
@@ -284,12 +284,12 @@ export default function AdminEmployees() {
 
                 <div className="form-field">
                   <label><Calendar size={14} /> Date of Birth</label>
-                  <input name="dateOfBirth" type="date" value={form.dateOfBirth} onChange={onChange} required />
+                  <input name="dateOfBirth" type="date" value={form.dateOfBirth} onChange={handleInputChange} required />
                 </div>
 
                 <div className="form-field">
                   <label><Users size={14} /> Gender</label>
-                  <select name="gender" value={form.gender} onChange={onChange} required>
+                  <select name="gender" value={form.gender} onChange={handleInputChange} required>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
@@ -303,7 +303,7 @@ export default function AdminEmployees() {
 
                 <div className="form-field">
                   <label><Droplets size={14} /> Blood Group</label>
-                  <select name="bloodGroup" value={form.bloodGroup} onChange={onChange} required>
+                  <select name="bloodGroup" value={form.bloodGroup} onChange={handleInputChange} required>
                     <option value="A+">A+</option>
                     <option value="A-">A-</option>
                     <option value="B+">B+</option>
@@ -327,7 +327,7 @@ export default function AdminEmployees() {
 
                 <div className="form-field">
                   <label><Calendar size={14} /> Date of Joining</label>
-                  <input name="joiningDate" type="date" value={form.joiningDate} onChange={onChange} required />
+                  <input name="joiningDate" type="date" value={form.joiningDate} onChange={handleInputChange} required />
                 </div>
 
               </div>

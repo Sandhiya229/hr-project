@@ -45,7 +45,7 @@ export default function AdminDashboard() {
         <p>Monitor your company's high-level metrics.</p>
       </header>
 
-      <div className="stats-grid reveal">
+      <div className="stats-grid animate-fade-in">
         {statCards.map((stat) => (
           <div 
             key={stat.id} 
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      <div className="dashboard-section glass-panel reveal">
+      <div className="dashboard-section glass-panel animate-fade-in">
         <div className="section-header flex-between">
           <h2>{filterStatus === 'all' ? 'Recent Projects' : `${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} Projects`}</h2>
           {filterStatus !== 'all' && (
