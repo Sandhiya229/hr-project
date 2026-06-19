@@ -34,6 +34,18 @@ export default function AdminProjects() {
   const employees = empData?.data?.employees || [];
   const [searchQuery, setSearchQuery] = useState('');
 
+  const generateNextProjectId = () => {
+    if (!projects || projects.length === 0) return 'PRJ-001';
+
+    const numbers = projects.map((proj) => {
+      const match = proj.projectId?.match(/(\d+)$/);
+      return match ? parseInt(match[1], 10) : 0;
+    });
+
+    const nextNumber = Math.max(...numbers, 0) + 1;
+    return `PRJ-${String(nextNumber).padStart(3, '0')}`;
+  };
+
   // Filter projects based on search query
   const filteredProjects = projects.filter(proj => 
     proj.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -65,7 +77,7 @@ export default function AdminProjects() {
     onError: (e) => setError(e?.message || 'Assign failed'),
   });
 
-  const openCreate = () => { setForm(EMPTY_FORM); setEditId(null); setError(''); setShowModal(true); };
+  const openCreate = () => { setForm({ ...EMPTY_FORM, projectId: generateNextProjectId() }); setEditId(null); setError(''); setShowModal(true); };
   const openEdit = (proj) => {
     setForm({
       projectId: proj.projectId,

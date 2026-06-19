@@ -10,7 +10,7 @@ const EMPTY_FORM = {
   employeeId: '', name: '', email: '',
   dateOfBirth: today, joiningDate: today, phone: '',
   gender: 'Male', bloodGroup: 'O+',
-  department: '', designation: '', basicPay: '',
+  department: '', designation: '',
 };
 
 export default function AdminEmployees() {
@@ -95,7 +95,6 @@ export default function AdminEmployees() {
       bloodGroup: emp.bloodGroup || '',
       department: emp.department,
       designation: emp.designation,
-      basicPay: emp.basicPay,
     });
     setEditId(emp._id);
     setError('');
@@ -103,7 +102,25 @@ export default function AdminEmployees() {
   };
 
   const closeModal = () => { setShowModal(false); setEditId(null); setError(''); };
-  const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const sanitizeFieldValue = (name, value) => {
+    switch (name) {
+      case 'name':
+        return value.replace(/[^A-Za-z ]/g, '');
+      case 'phone':
+        return value.replace(/\D/g, '').slice(0, 10);
+      case 'department':
+      case 'designation':
+        return value.replace(/[^A-Za-z ]/g, '');
+      default:
+        return value;
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: sanitizeFieldValue(name, value) }));
+  };
 
   const validateForm = () => {
     const trimmedName = form.name.trim();
@@ -122,9 +139,6 @@ export default function AdminEmployees() {
     if (!form.department.trim()) return 'Department is required.';
     if (!form.designation.trim()) return 'Designation is required.';
 
-    const basicPayValue = Number(form.basicPay);
-    if (!form.basicPay || Number.isNaN(basicPayValue) || basicPayValue <= 0) return 'Basic Pay must be a positive number.';
-
     return null;
   };
 
@@ -136,7 +150,7 @@ export default function AdminEmployees() {
       return;
     }
 
-    const body = { ...form, basicPay: Number(form.basicPay) };
+    const body = { ...form };
     if (editId) {
       const { employeeId: _, ...rest } = body;
       updateMutation.mutate({ id: editId, body: rest });
@@ -200,7 +214,6 @@ export default function AdminEmployees() {
               <th>Department</th>
               <th>Designation</th>
               <th>Phone</th>
-              <th>Basic Pay</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -216,7 +229,6 @@ export default function AdminEmployees() {
                 <td>{emp.department}</td>
                 <td>{emp.designation}</td>
                 <td>{emp.phone || '-'}</td>
-                <td>₹{emp.basicPay?.toLocaleString()}</td>
                 <td>
                   <div className="action-btns">
                     <button className="btn-ghost" title="Update" onClick={() => openEdit(emp)}>
@@ -262,12 +274,12 @@ export default function AdminEmployees() {
 
                 <div className="form-field">
                   <label><User size={14} /> Full Name</label>
-                  <input name="name" value={form.name} onChange={onChange} placeholder="e.g. Jane Doe" required minLength={2} />
+                  <input name="name" value={form.name} onChange={handleInputChange} placeholder="e.g. Jane Doe" required minLength={2} />
                 </div>
 
                 <div className="form-field">
                   <label><Mail size={14} /> Email ID</label>
-                  <input name="email" type="email" value={form.email} onChange={onChange} placeholder="e.g. jane.doe@gmail.com" required />
+                  <input name="email" type="email" value={form.email} onChange={handleInputChange} placeholder="e.g. jane.doe@gmail.com" required />
                 </div>
 
                 <div className="form-field">
@@ -286,7 +298,7 @@ export default function AdminEmployees() {
 
                 <div className="form-field">
                   <label><Phone size={14} /> Phone Number</label>
-                  <input name="phone" value={form.phone} onChange={onChange} placeholder="e.g. 9876543210" required />
+                  <input name="phone" value={form.phone} onChange={handleInputChange} placeholder="e.g. 9876543210" required maxLength={10} />
                 </div>
 
                 <div className="form-field">
@@ -305,22 +317,17 @@ export default function AdminEmployees() {
 
                 <div className="form-field">
                   <label><Building2 size={14} /> Department</label>
-                  <input name="department" value={form.department} onChange={onChange} placeholder="e.g. Web Development" required />
+                  <input name="department" value={form.department} onChange={handleInputChange} placeholder="e.g. Web Development" required />
                 </div>
 
                 <div className="form-field">
                   <label><Briefcase size={14} /> Designation</label>
-                  <input name="designation" value={form.designation} onChange={onChange} placeholder="e.g. Senior Engineer" required />
+                  <input name="designation" value={form.designation} onChange={handleInputChange} placeholder="e.g. Senior Engineer" required />
                 </div>
 
                 <div className="form-field">
                   <label><Calendar size={14} /> Date of Joining</label>
                   <input name="joiningDate" type="date" value={form.joiningDate} onChange={onChange} required />
-                </div>
-
-                <div className="form-field full-span">
-                  <label><DollarSign size={14} /> Basic Pay</label>
-                  <input name="basicPay" type="number" value={form.basicPay} onChange={onChange} placeholder="e.g. 60000" required min={0} />
                 </div>
 
               </div>

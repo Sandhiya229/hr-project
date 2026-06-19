@@ -48,7 +48,6 @@ const createEmployeeSchema = z.object({
   bloodGroup: z.string(),
   department: z.string(),
   designation: z.string(),
-  basicPay: z.number().min(0),
 });
 
 export const createEmployee = asyncHandler(async (req, res) => {
@@ -59,7 +58,7 @@ export const createEmployee = asyncHandler(async (req, res) => {
     throw new ApiError(400, `Validation failed: ${errorMsgs}`, result.error.errors);
   }
 
-  const { employeeId, name, email, dateOfBirth, joiningDate, phone, gender, bloodGroup, department, designation, basicPay } = result.data;
+  const { employeeId, name, email, dateOfBirth, joiningDate, phone, gender, bloodGroup, department, designation } = result.data;
 
   // Auto-generate login password with better complexity
   const autoPassword = generateTemporaryPassword(name, dateOfBirth);
@@ -73,7 +72,7 @@ export const createEmployee = asyncHandler(async (req, res) => {
   const user = await User.create({ email, password: autoPassword, role: 'employee' });
 
   const employee = await Employee.create({
-    user: user._id, employeeId, name, email, dateOfBirth, joiningDate, phone, gender, bloodGroup, department, designation, basicPay
+    user: user._id, employeeId, name, email, dateOfBirth, joiningDate, phone, gender, bloodGroup, department, designation
   });
 
   // Dispatch Welcome Email

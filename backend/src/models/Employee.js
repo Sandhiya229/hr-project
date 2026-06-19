@@ -49,11 +49,6 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  basicPay: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
   status: {
     type: String,
     enum: ['active', 'inactive'],
