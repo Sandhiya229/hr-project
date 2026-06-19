@@ -78,6 +78,11 @@
   padding: 1.5rem 0; /* No horizontal padding */
 }
 
+.section-header {
+  padding: 0 2rem;
+  margin-bottom: 1rem;
+}
+
 .section-header h2 {
   font-size: 1.5rem;
   font-weight: 800;
@@ -93,7 +98,7 @@
 }
 
 .dashboard-section .data-table th {
-  padding: 1.25rem 0;
+  padding: 1.25rem 1rem;
   font-weight: 800;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -101,6 +106,10 @@
   letter-spacing: 1.5px;
   border: none;
   background: transparent;
+}
+
+.dashboard-section .data-table th:first-child {
+  padding-left: 2rem;
 }
 
 /* Align specific columns: Date of Joining, Department, Designation */
@@ -114,7 +123,7 @@
 }
 
 .dashboard-section .data-table td {
-  padding: 1.5rem 0;
+  padding: 1.5rem 1rem;
   background: var(--bg-primary);
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
@@ -123,6 +132,7 @@
 }
 
 .dashboard-section .data-table tr td:first-child {
+  padding-left: 2rem;
   border-left: 1px solid var(--border-color);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
