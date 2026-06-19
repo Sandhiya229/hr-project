@@ -85,14 +85,14 @@
 }
 
 /* Data Table Styling */
-.data-table {
+.dashboard-section .data-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 0.75rem;
   margin-top: -0.75rem;
 }
 
-.data-table th {
+.dashboard-section .data-table th {
   padding: 1.25rem 0;
   font-weight: 800;
   color: var(--text-muted);
@@ -104,16 +104,16 @@
 }
 
 /* Align specific columns: Date of Joining, Department, Designation */
-.data-table th:nth-child(3),
-.data-table td:nth-child(3),
-.data-table th:nth-child(4),
-.data-table td:nth-child(4),
-.data-table th:nth-child(5),
-.data-table td:nth-child(5) {
+.dashboard-section .data-table th:nth-child(3),
+.dashboard-section .data-table td:nth-child(3),
+.dashboard-section .data-table th:nth-child(4),
+.dashboard-section .data-table td:nth-child(4),
+.dashboard-section .data-table th:nth-child(5),
+.dashboard-section .data-table td:nth-child(5) {
   text-align: center;
 }
 
-.data-table td {
+.dashboard-section .data-table td {
   padding: 1.5rem 0;
   background: var(--bg-primary);
   border-top: 1px solid var(--border-color);
@@ -122,19 +122,19 @@
   font-weight: 500;
 }
 
-.data-table tr td:first-child {
+.dashboard-section .data-table tr td:first-child {
   border-left: 1px solid var(--border-color);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
 
-.data-table tr td:last-child {
+.dashboard-section .data-table tr td:last-child {
   border-right: 1px solid var(--border-color);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
 
-.data-table tr:hover td {
+.dashboard-section .data-table tr:hover td {
   background: var(--bg-tertiary);
   color: var(--text-primary);
 }
