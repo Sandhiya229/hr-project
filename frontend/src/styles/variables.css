@@ -60,21 +60,21 @@
   }
 }
 
-/* Dashboard Dark Theme */
+/* Dashboard Pure Black Theme */
 .example-theme {
-  --bg-primary: #0f172a; /* page background - dark slate */
-  --bg-secondary: #1e293b; /* content background / cards */
-  --bg-tertiary: #334155; /* surfaces and hovers */
+  --bg-primary: #000000; /* pure black page background */
+  --bg-secondary: #0a0a0f; /* very dark content background / cards */
+  --bg-tertiary: #16161e; /* surfaces and hovers */
 
   --text-primary: #f8fafc; /* white text */
   --text-secondary: #cbd5e1; /* muted text */
   --text-muted: #94a3b8; /* extra muted */
 
-  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.08);
 
-  --sidebar-bg: #0b1120; /* very dark slate for sidebar */
+  --sidebar-bg: #050505; /* almost pure black sidebar */
   --sidebar-text: #f8fafc;
   --sidebar-muted: rgba(248, 250, 252, 0.6);
 
-  --main-bg: linear-gradient(180deg, #0f172a 0%, #0b1121 100%);
+  --main-bg: #000000;
 }
