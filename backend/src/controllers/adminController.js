@@ -104,6 +104,8 @@ HR Department
     message: emailMessage,
   }).catch(error => {
     logger.error(`Background: Failed to send welcome email to ${email}: ${error.message}`);
+    console.error(`❌ BACKGROUND EMAIL ERROR: ${email} - ${error.message}`);
+    console.error(error.stack);
   });
 
   return res.status(201).json(new ApiResponse(201, {

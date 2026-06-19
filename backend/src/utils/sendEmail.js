@@ -29,6 +29,8 @@ export const sendEmail = async (options) => {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASS,
         },
+        connectionTimeout: 10000,
+        socketTimeout: 10000,
       });
 
       const mailOptions = {
@@ -38,7 +40,13 @@ export const sendEmail = async (options) => {
         text: options.message,
       };
 
-      const info = await transporter.sendMail(mailOptions);
+      console.log(`⏳ Sending mail (10s timeout)...`);
+      const info = await Promise.race([
+        transporter.sendMail(mailOptions),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('SMTP sendMail timeout after 10 seconds')), 10000)
+        )
+      ]);
       
       const logMsg = `[${new Date().toISOString()}] SUCCESS (Nodemailer): Sent to ${options.email} - Response: ${info.response}\n`;
       fs.appendFileSync(logFilePath, logMsg);
