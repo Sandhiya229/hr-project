@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { axiosInstance } from '../api/axiosInstance';
 import './Login.css';
@@ -122,7 +122,7 @@ export default function ResetPassword() {
         </form>
 
         <p className="auth-link">
-          Remember your password? <a href="/login" style={{ color: 'var(--accent-primary)' }}>Sign In</a>
+          Remember your password? <Link to="/login" style={{ color: 'var(--accent-primary)' }}>Sign In</Link>
         </p>
       </div>
     </div>

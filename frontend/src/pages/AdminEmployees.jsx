@@ -109,7 +109,7 @@ export default function AdminEmployees() {
     e.preventDefault();
     const body = { ...form, basicPay: Number(form.basicPay) };
     if (editId) {
-      const { employeeId, ...rest } = body;
+      const { employeeId: _, ...rest } = body;
       updateMutation.mutate({ id: editId, body: rest });
     } else {
       createMutation.mutate(body);

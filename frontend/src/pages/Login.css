@@ -387,6 +387,74 @@
   text-align: center;
 }
 
+.api-success {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #047857;
+  padding: 1rem;
+  border-radius: 14px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.dev-token-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+}
+
+.dev-token-header h3 {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 1rem;
+}
+
+.dev-token-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 16px;
+  border: 1px solid rgba(99, 102, 241, 0.18);
+}
+
+.copy-button {
+  align-self: flex-start;
+  padding: 0.75rem 1.2rem;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-radius: 14px;
+  color: white;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.copy-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.auth-link {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.auth-link a {
+  color: #a855f7;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 1100px) {
   .login-card-wrapper {
