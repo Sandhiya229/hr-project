@@ -299,3 +299,20 @@ input, textarea, select {
 .status-badge.status-danger, .status-tag.status-danger {
   background: rgba(239, 68, 68, 0.15) !important; color: #ef4444 !important; border: 1px solid rgba(239, 68, 68, 0.3) !important;
 }
+
+/* Fix for native date picker icon visibility on dark backgrounds */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* In Light Theme, revert the calendar icon to its native dark color */
+.light-theme input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none;
+}
