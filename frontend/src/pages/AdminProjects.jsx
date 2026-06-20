@@ -88,7 +88,16 @@ export default function AdminProjects() {
     onError: (e) => setError(e?.message || 'Assign failed'),
   });
 
-  const openCreate = () => { setForm({ ...EMPTY_FORM, projectId: generateNextProjectId() }); setEditId(null); setError(''); setShowModal(true); };
+  const openCreate = () => { 
+    setForm({ 
+      ...EMPTY_FORM, 
+      projectId: generateNextProjectId(),
+      startDate: new Date().toISOString().split('T')[0]
+    }); 
+    setEditId(null); 
+    setError(''); 
+    setShowModal(true); 
+  };
   const openEdit = (proj) => {
     setForm({
       projectId: proj.projectId,
