@@ -53,6 +53,17 @@ export default function AdminProjects() {
     (proj.description && proj.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
+  const getBadgeClass = (proj) => {
+    if (proj.status === 'completed') return 'status-completed';
+    if (proj.endDate) {
+      const end = new Date(proj.endDate);
+      const now = new Date();
+      const diffDays = (end - now) / (1000 * 60 * 60 * 24);
+      if (diffDays <= 3 && proj.status !== 'completed') return 'status-danger';
+    }
+    return `status-${proj.status}`;
+  };
+
   const createMutation = useMutation({
     mutationFn: (body) => api.post('/admin/projects', body),
     onSuccess: () => { qc.invalidateQueries(['adminProjects']); closeModal(); },
@@ -163,7 +174,9 @@ export default function AdminProjects() {
                 <span className="proj-id">{proj.projectId}</span>
                 <h3 className="proj-name">{proj.projectName}</h3>
               </div>
-              <span className={`status-badge status-${proj.status}`}>{proj.status}</span>
+              <span className={`status-badge ${getBadgeClass(proj)}`}>
+                {getBadgeClass(proj) === 'status-danger' ? 'Near Deadline' : proj.status}
+              </span>
             </div>
             
             <p className="proj-desc">{proj.description}</p>

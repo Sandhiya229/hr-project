@@ -285,3 +285,17 @@ input, textarea, select {
   .emp-form-grid { padding: 1.25rem; }
   .emp-modal-actions { padding: 1rem 1.25rem 1.25rem; }
 }
+
+/* Global Status Colors for Badges and Tags */
+.status-badge.status-ongoing, .status-tag.status-ongoing {
+  background: rgba(245, 158, 11, 0.15) !important; color: #fbbf24 !important; border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+.status-badge.status-completed, .status-tag.status-completed {
+  background: rgba(16, 185, 129, 0.15) !important; color: #34d399 !important; border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+.status-badge.status-planned, .status-tag.status-planned {
+  background: rgba(99, 102, 241, 0.15) !important; color: #818cf8 !important; border: 1px solid rgba(99, 102, 241, 0.3) !important;
+}
+.status-badge.status-danger, .status-tag.status-danger {
+  background: rgba(239, 68, 68, 0.15) !important; color: #ef4444 !important; border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
