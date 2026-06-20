@@ -216,7 +216,7 @@ export default function EmployeeDashboard() {
       {
         showUpdateModal && selectedProject && (
           <div className="emp-modal-overlay" onClick={closeModal}>
-            <div className="emp-modal absolute-center" onClick={(e) => e.stopPropagation()}>
+            <div className="emp-modal glass-body" onClick={(e) => e.stopPropagation()}>
               <div className="emp-modal-header">
                 <div className="emp-modal-icon">
                   <Briefcase size={26} />
