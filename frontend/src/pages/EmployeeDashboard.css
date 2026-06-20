@@ -8,9 +8,6 @@
   border-radius: 1rem;
 }
 
-.projects-view {
-  /* Removed negative margins to give space above 'My Projects' */
-}
 
 .page-header {
   padding-left: 0 !important;
