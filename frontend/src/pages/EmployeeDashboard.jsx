@@ -61,6 +61,21 @@ export default function EmployeeDashboard() {
     setUpdateForm({ status: '', message: '', file: null });
   };
 
+  const getButtonClass = (proj) => {
+    if (proj.status === 'completed') return 'btn-completed';
+    
+    // Check if end date is within 3 days or past
+    if (proj.endDate) {
+      const end = new Date(proj.endDate);
+      const now = new Date();
+      const diffDays = (end - now) / (1000 * 60 * 60 * 24);
+      if (diffDays <= 3 && proj.status !== 'completed') return 'btn-danger';
+    }
+    
+    if (proj.status === 'ongoing') return 'btn-ongoing';
+    return '';
+  };
+
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setUpdateForm(f => ({ ...f, file: e.target.files[0] }));
@@ -198,7 +213,7 @@ export default function EmployeeDashboard() {
               </div>
 
               <div className="card-actions">
-                <button className="submit-progress-btn" onClick={() => openUpdateModal(proj)}>
+                <button className={`submit-progress-btn ${getButtonClass(proj)}`} onClick={() => openUpdateModal(proj)}>
                   <Upload size={18} />
                   <span>Submit Progress</span>
                 </button>

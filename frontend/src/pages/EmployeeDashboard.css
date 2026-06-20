@@ -193,3 +193,31 @@
   color: white !important;
   border-radius: 12px !important;
 }
+
+/* Dynamic Status Buttons */
+.submit-progress-btn.btn-completed {
+  background: linear-gradient(135deg, #059669, #10b981);
+  box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.4);
+}
+
+.submit-progress-btn.btn-completed:hover {
+  box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.6);
+}
+
+.submit-progress-btn.btn-danger {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  box-shadow: 0 15px 30px -10px rgba(239, 68, 68, 0.4);
+}
+
+.submit-progress-btn.btn-danger:hover {
+  box-shadow: 0 20px 40px -10px rgba(239, 68, 68, 0.6);
+}
+
+.submit-progress-btn.btn-ongoing {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.4);
+}
+
+.submit-progress-btn.btn-ongoing:hover {
+  box-shadow: 0 20px 40px -10px rgba(245, 158, 11, 0.6);
+}
