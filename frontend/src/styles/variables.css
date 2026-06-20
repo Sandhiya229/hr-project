@@ -3,6 +3,8 @@
   --bg-primary: #000000;
   --bg-secondary: #0a0a0f;
   --bg-tertiary: #16161e;
+  
+  --bg-gradient: radial-gradient(circle at center, #0d0d2b 0%, #000000 100%);
 
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
@@ -43,21 +45,21 @@
   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Light mode fallback (optional, but keep it if user specifically wants to toggle) */
-@media (prefers-color-scheme: light) {
-  .light-theme {
-    --bg-primary: #f8fafc;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #f1f5f9;
+/* Light mode theme */
+.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
 
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
 
-    --border-color: #e2e8f0;
+  --border-color: #e2e8f0;
 
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  
+  --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
 }
 
 /* Dashboard Pure Black Theme */

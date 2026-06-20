@@ -1,18 +1,22 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { 
   Users, 
   Briefcase, 
   LayoutDashboard, 
   LogOut, 
   Menu,
-  X 
+  X,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useState } from 'react';
 import './Layout.css';
 
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -30,16 +34,21 @@ export default function Layout({ children }) {
   const links = user?.role === 'admin' ? adminLinks : employeeLinks;
 
   return (
-    <div className="layout-container example-theme">
+    <div className="layout-container">
       {/* Mobile Topbar */}
       <div className="mobile-topbar glass-panel">
         <div className="logo-mobile">
           <img src="/shatechx-mini.png" alt="Logo" className="mini-logo-nav" />
           <span>SHATECHX</span>
         </div>
-        <button onClick={() => setSidebarOpen(true)} className="icon-btn">
-          <Menu size={24} />
-        </button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={toggleTheme} className="icon-btn" title="Toggle Theme">
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <button onClick={() => setSidebarOpen(true)} className="icon-btn">
+            <Menu size={24} />
+          </button>
+        </div>
       </div>
 
       {/* Backdrop for mobile */}
@@ -84,10 +93,15 @@ export default function Layout({ children }) {
               <span className="user-role">{user.role}</span>
             </div>
           </div>
-          <button onClick={logout} className="logout-btn">
-            <LogOut size={20} />
-            <span>Logout</span>
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+            <button onClick={toggleTheme} className="icon-btn" style={{ flexShrink: 0 }} title="Toggle Theme">
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button onClick={logout} className="logout-btn" style={{ flex: 1 }}>
+              <LogOut size={20} />
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
       </aside>
 
