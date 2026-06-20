@@ -97,7 +97,7 @@ export default function EmployeeDashboard() {
       </header>
 
       {!isProjectsPage && (
-        <div className="stats-grid reveal">
+        <div className="stats-grid">
           <div
             className={`stat-card glass-panel ${filterStatus === 'all' ? 'active-filter' : ''}`}
             onClick={() => setFilterStatus('all')}

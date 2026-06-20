@@ -1,15 +1,15 @@
 .dashboard-container {
-  padding: 1.5rem 0;
+  padding: 2rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  background: radial-gradient(circle at center, #0d0d2b 0%, #000000 100%) !important;
+  border-radius: 1rem;
 }
 
 .projects-view {
-  background: radial-gradient(circle at center, #0d0d2b 0%, #000000 100%);
-  margin: -1.5rem 0; /* Only vertical offset */
-  padding: 1.5rem 0;
+  /* Removed negative margins to give space above 'My Projects' */
 }
 
 .page-header {
