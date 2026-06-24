@@ -1,147 +1,75 @@
-import nodemailer from 'nodemailer';
-import { Resend } from 'resend';
+import { google } from 'googleapis';
 import { logger } from './logger.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Resolve __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const logFilePath = path.join(__dirname, '../../../email-delivery.log');
 
 /**
- * Send an email using Nodemailer (Gmail SMTP) with Resend fallback
- * @param {Object} options Options object containing { email, subject, message }
+ * Send an email using Gmail API (OAuth2).
+ * Required environment variables:
+ *   GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN, GMAIL_USER
+ * @param {Object} options - { email, subject, message, fromName (optional) }
  */
 export const sendEmail = async (options) => {
   console.log(`📧 Email Request: Attempting to send email to ${options.email}`);
-  console.log(`   EMAIL_USER configured: ${!!process.env.EMAIL_USER}`);
-  console.log(`   EMAIL_PASS configured: ${!!process.env.EMAIL_PASS}`);
-  console.log(`   SMTP_HOST configured: ${!!process.env.SMTP_HOST}`);
-  console.log(`   SMTP_PORT configured: ${!!process.env.SMTP_PORT}`);
-  console.log(`   RESEND_API_KEY configured: ${!!process.env.RESEND_API_KEY}`);
 
-  // 1. Try Nodemailer (SMTP) if credentials exist (support generic SMTP_HOST/PORT or EMAIL_USER)
-  let attemptedSMTP = false;
-  const smtpConfigured = (process.env.SMTP_HOST && process.env.SMTP_PORT && process.env.SMTP_USER && process.env.SMTP_PASS) || (process.env.EMAIL_USER && process.env.EMAIL_PASS);
-  if (smtpConfigured) {
-    attemptedSMTP = true;
-    try {
-      console.log(`🔄 Attempting Nodemailer (SMTP)...`);
-
-      let transporterConfig;
-      if (process.env.SMTP_HOST) {
-        const port = parseInt(process.env.SMTP_PORT, 10) || 587;
-        const secure = process.env.SMTP_SECURE === 'true' ? true : (port === 465);
-        transporterConfig = {
-          host: process.env.SMTP_HOST,
-          port,
-          secure,
-          auth: {
-            user: process.env.SMTP_USER || process.env.EMAIL_USER,
-            pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
-          },
-          connectionTimeout: 10000,
-          socketTimeout: 10000,
-        };
-      } else {
-        // Fallback to Gmail SMTP using EMAIL_USER/EMAIL_PASS
-        const port = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 465;
-        const secure = process.env.SMTP_SECURE === 'true' ? true : (port === 465);
-        transporterConfig = {
-          host: 'smtp.gmail.com',
-          port,
-          secure,
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-          },
-          connectionTimeout: 10000,
-          socketTimeout: 10000,
-        };
-      }
-
-      const transporter = nodemailer.createTransport(transporterConfig);
-
-      const mailOptions = {
-        from: `"EPMS System" <${process.env.SMTP_USER || process.env.EMAIL_USER}>`,
-        to: options.email,
-        subject: options.subject,
-        text: options.message,
-      };
-
-      console.log(`⏳ Sending mail (10s timeout) using host ${transporterConfig.host}:${transporterConfig.port}...`);
-      const info = await Promise.race([
-        transporter.sendMail(mailOptions),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('SMTP sendMail timeout after 10 seconds')), 10000)
-        )
-      ]);
-
-      const logMsg = `[${new Date().toISOString()}] SUCCESS (Nodemailer): Sent to ${options.email} - Response: ${info.response}\n`;
-      fs.appendFileSync(logFilePath, logMsg);
-      console.log(`✅ SUCCESS: Email sent to ${options.email} via SMTP`);
-      console.log(`   Response: ${info.response}`);
-      logger.info(`Email successfully sent to ${options.email} via SMTP. Response: ${info.response}`);
-      return;
-    } catch (error) {
-      const errorMsg = `[${new Date().toISOString()}] WARNING (Nodemailer): SMTP failed for ${options.email} - Error: ${error.message}\n`;
-      fs.appendFileSync(logFilePath, errorMsg);
-      console.log(`⚠️  Nodemailer SMTP Error for ${options.email}:`);
-      console.log(`   Error: ${error.message}`);
-      logger.warn(`Nodemailer SMTP failed to send to ${options.email}: ${error.message}. Trying Resend fallback...`);
-    }
+  const { GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN, GMAIL_USER } = process.env;
+  if (!GMAIL_CLIENT_ID || !GMAIL_CLIENT_SECRET || !GMAIL_REFRESH_TOKEN || !GMAIL_USER) {
+    const errMsg = `[${new Date().toISOString()}] ERROR (Config): Missing Gmail env vars\n`;
+    fs.appendFileSync(logFilePath, errMsg);
+    console.error('❌ Missing Gmail configuration');
+    logger.error('Missing Gmail environment variables');
+    return;
   }
 
-  // 2. Fallback to Resend API if API Key exists
-  if (process.env.RESEND_API_KEY) {
-    try {
-      console.log(`🔄 Attempting Resend API...`);
-      const resend = new Resend(process.env.RESEND_API_KEY);
+  // Initialise OAuth2 client
+  const oauth2Client = new google.auth.OAuth2(
+    GMAIL_CLIENT_ID,
+    GMAIL_CLIENT_SECRET,
+    'urn:ietf:wg:oauth:2.0:oob' // redirect not needed for server‑side flow
+  );
+  oauth2Client.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
 
-      const { data, error } = await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: options.email,
-        subject: options.subject,
-        text: options.message,
-      });
+  // Gmail client
+  const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
 
-      if (error) {
-        const errorMsg = `[${new Date().toISOString()}] ERROR (Resend): Failed to send to ${options.email} - Error: ${JSON.stringify(error)}\n`;
-        fs.appendFileSync(logFilePath, errorMsg);
-        console.log(`❌ Resend API Error for ${options.email}:`);
-        console.log(`   Error: ${JSON.stringify(error)}`);
-        logger.error(`Resend API Error sending to ${options.email}: ${JSON.stringify(error)}`);
-        return;
-      }
+  // Build RFC‑822 raw message
+  const fromHeader = options.fromName ? `${options.fromName} <${GMAIL_USER}>` : GMAIL_USER;
+  const rawMessage = [
+    `From: ${fromHeader}`,
+    `To: ${options.email}`,
+    `Subject: ${options.subject}`,
+    'Content-Type: text/plain; charset="UTF-8"',
+    '',
+    `${options.message}`,
+  ].join('\n');
 
-      const logMsg = `[${new Date().toISOString()}] SUCCESS (Resend): Sent to ${options.email} - ID: ${data.id}\n`;
-      fs.appendFileSync(logFilePath, logMsg);
-      console.log(`✅ SUCCESS: Email sent to ${options.email} via Resend`);
-      console.log(`   Message ID: ${data.id}`);
-      logger.info(`Email successfully sent to ${options.email} via Resend. ID: ${data.id}`);
-      return;
-    } catch (error) {
-      const errorMsg = `[${new Date().toISOString()}] ERROR (Resend): Fatal error sending to ${options.email} - Error: ${error.message}\n`;
-      fs.appendFileSync(logFilePath, errorMsg);
-      console.log(`❌ FATAL Resend Error for ${options.email}:`);
-      console.log(`   Error: ${error.message}`);
-      logger.error(`Fatal error sending email via Resend to ${options.email}: ${error.message}`);
-    }
+  // Base64url encode as required by Gmail API
+  const encodedMessage = Buffer.from(rawMessage)
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '');
+
+  try {
+    const res = await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: { raw: encodedMessage },
+    });
+    const logMsg = `[${new Date().toISOString()}] SUCCESS (Gmail API): Sent to ${options.email} - ID: ${res.data.id}\n`;
+    fs.appendFileSync(logFilePath, logMsg);
+    console.log(`✅ SUCCESS: Email sent via Gmail API (ID: ${res.data.id})`);
+    logger.info(`Email sent via Gmail API to ${options.email} – ID ${res.data.id}`);
+  } catch (error) {
+    const errMsg = `[${new Date().toISOString()}] ERROR (Gmail API): ${error.message}\n`;
+    fs.appendFileSync(logFilePath, errMsg);
+    console.error('❌ Gmail API send error:', error.message);
+    logger.error(`Gmail API send error for ${options.email}: ${error.message}`);
+    throw error;
   }
-
-  // 3. No email service configured or all attempts failed
-  let noConfigMsg;
-  if (attemptedSMTP && !process.env.RESEND_API_KEY) {
-    noConfigMsg = `[${new Date().toISOString()}] SKIP: SMTP attempted and Resend API Key not configured for ${options.email}\n`;
-    console.log(`⚠️  Email NOT sent to ${options.email}`);
-    console.log(`   Reason: SMTP attempted but failed; Resend API Key not configured`);
-    logger.warn("Skipping email dispatch: SMTP attempted but failed, and Resend API Key not configured.");
-  } else {
-    noConfigMsg = `[${new Date().toISOString()}] SKIP: No email configuration for ${options.email}\n`;
-    console.log(`⚠️  Email NOT sent to ${options.email}`);
-    console.log(`   Reason: Neither SMTP nor Resend API Key configured`);
-    logger.warn("Skipping email dispatch: Neither SMTP nor Resend API Key configurations are working/configured.");
-  }
-  fs.appendFileSync(logFilePath, noConfigMsg);
 };
