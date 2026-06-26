@@ -175,3 +175,21 @@
   color: #94a3b8;
   border: 1px solid rgba(148, 163, 184, 0.2);
 }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem 1rem;
+  }
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-section .data-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

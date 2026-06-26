@@ -13,6 +13,28 @@
   box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
 }
 
+.mobile-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.logo-mobile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
 .brand-name {
   letter-spacing: 2px;
   font-weight: 800;
@@ -189,12 +211,32 @@
 
 /* Mobile Adjustments */
 @media (max-width: 768px) {
-  .main-content {
-    margin-left: 0;
-  }
   .mobile-topbar {
+    display: flex;
     background: rgba(10, 10, 15, 0.9) !important;
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 45;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
   }
 }

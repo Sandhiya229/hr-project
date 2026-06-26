@@ -196,3 +196,13 @@
   color: var(--text-muted);
   font-size: 0.8rem;
 }
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .proj-page {
+    padding: 1.5rem 1rem;
+  }
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}

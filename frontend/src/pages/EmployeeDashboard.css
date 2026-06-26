@@ -218,3 +218,16 @@
 .submit-progress-btn.btn-ongoing:hover {
   box-shadow: 0 20px 40px -10px rgba(245, 158, 11, 0.6);
 }
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
